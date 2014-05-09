@@ -45,6 +45,14 @@ public class Sound extends Observable {
 
     }
 
+    /**
+     * Get the duration of the Sound.
+     * @return the duration in milliseconds
+     */
+    public double getDuration() {
+        return duration;
+    }
+
     private Generator           generator;
     private int                 frequency;  // Hertzs
     private double              duration;   // Milliseconds
@@ -52,5 +60,4 @@ public class Sound extends Observable {
 
     // Constants
     private final int SAMPLE_RATE   = 44100;    // CD quality audio
-    private final int MAX_16_BITS   = Short.MAX_VALUE;
 }
