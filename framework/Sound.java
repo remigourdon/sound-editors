@@ -18,11 +18,10 @@ public class Sound extends Observable {
      * @param  f the frequency of the signal
      * @param  d the duration of the sound
      */
-    public Sound(Generator g, int f, int d) {
+    public Sound(Generator g, double f, double d) {
         generator   = g;
         frequency   = f;
         duration    = d;
-        data        = null;
 
         generateSignal();
     }
@@ -31,7 +30,7 @@ public class Sound extends Observable {
      * Generate the signal data from the basic wave.
      */
     public void generateSignal() {
-        byte[] signal = generator.generate(frequency, duration, SAMPLE_RATE);
+        double[] signal = generator.generate(frequency, duration, amplitude);
 
         data = signal;
 
@@ -43,23 +42,21 @@ public class Sound extends Observable {
      * Get the duration of the Sound.
      * @return the duration in seconds
      */
-    public int getDuration() {
+    public double getDuration() {
         return duration;
     }
 
     /**
      * Get the data of the Sound.
-     * @return the data as an array of bytes
+     * @return the data as an array of doubles
      */
-    public byte[] getData() {
+    public double[] getData() {
         return data;
     }
 
     private Generator           generator;
-    private int                 frequency;  // Hertzs
-    private int                 duration;   // Seconds
-    private byte[]              data;
-
-    // Constants
-    private final int SAMPLE_RATE   = 44100;    // CD quality audio
+    private double              frequency;  // Hertzs
+    private double              duration;   // Seconds
+    private double              amplitude;
+    private double[]            data;
 }
