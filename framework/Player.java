@@ -16,7 +16,7 @@ import framework.Sound;
 public class Player {
     public Player() {
         final AudioFormat af = new AudioFormat(
-            SAMPLE_RATE, BITS_PER_SAMPLE, 1, true, true);
+            Generator.SAMPLE_RATE, BITS_PER_SAMPLE, 1, true, true);
 
         try {
             line = AudioSystem.getSourceDataLine(af);
@@ -106,6 +106,5 @@ public class Player {
     private HashMap<Sound, Boolean>     playlist;
 
     // Constants
-    private final int SAMPLE_RATE       = 44100;    // CD quality audio
     private final int BITS_PER_SAMPLE   = 16;
 }
