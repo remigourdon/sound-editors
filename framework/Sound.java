@@ -38,6 +38,9 @@ public class Sound extends Observable {
             signal = m.apply(signal);
 
         data = signal;
+
+        setChanged();
+        notifyObservers(data);
     }
 
     /**
