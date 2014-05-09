@@ -97,7 +97,7 @@ public class Player {
         line.write(theMix, 0, theMix.length);
     }
 
-    private final SourceDataLine        line;
+    private SourceDataLine              line;
     private HashMap<Sound, Boolean>     playlist;
 
     // Constants
