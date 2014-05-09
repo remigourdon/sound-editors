@@ -96,7 +96,10 @@ public class Player {
         }
 
         byte[] theMix = mix(selection);
+        line.start();
         line.write(theMix, 0, theMix.length);
+        line.stop();
+        line.drain();
     }
 
     private SourceDataLine              line;
