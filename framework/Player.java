@@ -23,7 +23,7 @@ public class Player {
             e.printStackTrace();
         }
 
-        playlist = new Map<Sound, boolean>();
+        playlist = new Map<Sound, Boolean>();
     }
 
     /**
@@ -86,7 +86,7 @@ public class Player {
     public void play() {
         ArrayList<Sound> selection = new ArrayList<Sound>();
 
-        for(Map.Entry<Sound, boolean> entry : map.entrySet()) {
+        for(Map.Entry<Sound, Boolean> entry : map.entrySet()) {
             if(entry.getValue())
                 selection.add(entry.getKey());
         }
@@ -96,7 +96,7 @@ public class Player {
     }
 
     private final SourceDataLine    line;
-    private Map<Sound, boolean>     playlist;
+    private Map<Sound, Boolean>     playlist;
 
     // Constants
     private final int SAMPLE_RATE       = 44100;    // CD quality audio
