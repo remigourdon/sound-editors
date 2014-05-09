@@ -38,14 +38,6 @@ public class Sound extends Observable {
     }
 
     /**
-     * Instanciate a SoundEditor and hand back its reference.
-     * @return the reference to the SoundEditor
-     */
-    public SoundEditor addEditor() {
-
-    }
-
-    /**
      * Get the duration of the Sound.
      * @return the duration in seconds
      */
