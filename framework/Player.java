@@ -72,11 +72,13 @@ public class Player {
         byte[] result = new byte[maxDuration * SAMPLE_RATE];
 
         for(int i = 0; i < result.length; i++) {
+            ArrayList<Sound> done = new ArrayList<Sound>();
             for(Sound s : l) {
                 result[i] = (byte)(s.getData()[i] + result[i]);
                 if(i + 1 >= s.getData().length)
-                    l.remove(s);
+                    done.add(s);
             }
+            l.removeAll(done);
         }
 
         return result;
