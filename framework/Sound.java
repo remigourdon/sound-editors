@@ -1,7 +1,8 @@
 package framework;
 
 import java.util.ArrayList;
-
+import java.util.Observable;
+import framework.generators.Generator;
 
 /**
  * Represents a sound entity.
