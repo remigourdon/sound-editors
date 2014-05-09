@@ -40,6 +40,18 @@ public class Player {
         playlist.remove(s);
     }
 
+    /**
+     * Toggle a Sound inside the playlist.
+     *
+     * If its value is true, it is added to the mix.
+     * If its value is false, it is muted.
+     * @param s the Sound to be toggled
+     */
+    public void toggleSound(Sound s) {
+        if(playlist.get(s) != null)
+            playlist.put(s, !playlist.get(s));
+    }
+
     private final SourceDataLine    line;
     private Map<Sound, boolean>     playlist;
 
