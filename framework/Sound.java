@@ -14,9 +14,28 @@ import framework.editors.SoundEditor;
 public class Sound extends Observable {
     /**
      * Creates a Sound object.
+     * @param  g the generator to be used
+     * @param  f the frequency of the signal
+     * @param  d the duration of the sound
      */
-    public Sound() {
+    public Sound(Generator g, int f, double d) {
+        generator   = g;
+        frequency   = f;
+        duration    = d;
 
+        generateSignal();
+    }
+
+    /**
+     * Generate the signal data from the basic wave and modifiers.
+     */
+    public void generateSignal() {
+        byte[] signal = generator.generate(frequency, duration, SAMPLE_RATE);
+
+        foreach(Modifier m : modifiers)
+            signal = m.apply(signal);
+
+        data = signal;
     }
 
     /**
@@ -43,6 +62,7 @@ public class Sound extends Observable {
 
     }
 
+    private Generator           generator;
     private int                 frequency;  // Hertzs
     private double              duration;   // Milliseconds
     private byte[]              data;
