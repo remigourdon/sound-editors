@@ -1,18 +1,16 @@
 package framework.generators;
 
 /**
- * Implements the Generator interface to create sine waves.
+ * Extends the Generator abstract class to create sine waves.
  */
-public class SineGenerator implements Generator {
-    public byte[] generate(int f, int d, int sr) {
-        byte[] sin = new byte[d * sr];
+public class SineGenerator extends Generator {
+    public double[] generate(double f, double d, double a) {
+        int N = (int)(Generator.SAMPLE_RATE * d);
+        double[] result = new double[N+1];
 
-        double samplingInterval = (double) (sr / f);
+        for(int i = 0; i <= N; i++)
+            result[i] = a * Math.sin(2 * Math.PI * i * f / Generator.SAMPLE_RATE);
 
-        for(int i = 0; i < sin.length; i++) {
-            double angle = (2.0 * Math.PI * i) / samplingInterval;
-            sin[i] = (byte) (Math.sin(angle) * 127);
-        }
-        return sin;
+        return result;
     }
 }
