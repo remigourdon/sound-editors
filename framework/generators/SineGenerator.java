@@ -3,7 +3,7 @@ package framework.generators;
 /**
  * Implements the Generator interface to create sine waves.
  */
-public class SineGenerator Implements Generator {
+public class SineGenerator implements Generator {
     public byte[] generate(int f, int d, int sr) {
         byte[] sin = new byte[d * sr];
 
