@@ -71,7 +71,7 @@ public class Player {
 
         for(int i = 0; i < result.length; i++) {
             for(Sound s : l) {
-                byte[i] = (byte)(s.getData()[i] + byte[i]);
+                result[i] = (byte)(s.getData()[i] + result[i]);
                 if(i + 1 >= s.getData().length)
                     l.remove(s);
             }
