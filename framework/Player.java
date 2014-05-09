@@ -67,7 +67,15 @@ public class Player {
 
         byte[] result = new byte[maxDuration * SAMPLE_RATE];
 
-        for(int i = 0; i < )
+        for(int i = 0; i < result.length; i++) {
+            foreach(Sound s : l) {
+                byte[i] = (byte)(s.getData()[i] + byte[i]);
+                if(i + 1 >= s.getData().length)
+                    l.remove(s);
+            }
+        }
+
+        return result;
     }
 
     private final SourceDataLine    line;
