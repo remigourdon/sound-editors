@@ -4,6 +4,8 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 import framework.Sound;
 
 /**
@@ -23,7 +25,7 @@ public class Player {
             e.printStackTrace();
         }
 
-        playlist = new Map<Sound, Boolean>();
+        playlist = new HashMap<Sound, Boolean>();
     }
 
     /**
@@ -86,7 +88,7 @@ public class Player {
     public void play() {
         ArrayList<Sound> selection = new ArrayList<Sound>();
 
-        for(Map.Entry<Sound, Boolean> entry : map.entrySet()) {
+        for(Map.Entry<Sound, Boolean> entry : playlist.entrySet()) {
             if(entry.getValue())
                 selection.add(entry.getKey());
         }
@@ -95,8 +97,8 @@ public class Player {
         line.write(theMix, 0, theMix.length);
     }
 
-    private final SourceDataLine    line;
-    private Map<Sound, Boolean>     playlist;
+    private final SourceDataLine        line;
+    private HashMap<Sound, Boolean>     playlist;
 
     // Constants
     private final int SAMPLE_RATE       = 44100;    // CD quality audio
