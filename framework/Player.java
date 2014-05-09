@@ -52,11 +52,28 @@ public class Player {
             playlist.put(s, !playlist.get(s));
     }
 
+    /**
+     * Mix the Sound objects contains in the list.
+     * @param  l the list of Sound objects to be mixed
+     * @return   the byte array containing the mix
+     */
+    public byte[] mix(ArrayList<Sound> l) {
+        int maxDuration = 0;
+
+        foreach(Sound s : l) {
+            if(s.getDuration() > maxDuration)
+                maxDuration = s.getDuration();
+        }
+
+        byte[] result = new byte[maxDuration * SAMPLE_RATE];
+
+        for(int i = 0; i < )
+    }
+
     private final SourceDataLine    line;
     private Map<Sound, boolean>     playlist;
 
     // Constants
     private final int SAMPLE_RATE       = 44100;    // CD quality audio
-    private final int MAX_16_BITS       = Short.MAX_VALUE;
     private final int BITS_PER_SAMPLE   = 16;
 }

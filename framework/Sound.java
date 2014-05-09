@@ -16,7 +16,7 @@ public class Sound extends Observable {
      * @param  f the frequency of the signal
      * @param  d the duration of the sound
      */
-    public Sound(Generator g, int f, double d) {
+    public Sound(Generator g, int f, int d) {
         generator   = g;
         frequency   = f;
         duration    = d;
@@ -47,15 +47,15 @@ public class Sound extends Observable {
 
     /**
      * Get the duration of the Sound.
-     * @return the duration in milliseconds
+     * @return the duration in seconds
      */
-    public double getDuration() {
+    public int getDuration() {
         return duration;
     }
 
     private Generator           generator;
     private int                 frequency;  // Hertzs
-    private double              duration;   // Milliseconds
+    private int                 duration;   // Seconds
     private byte[]              data;
 
     // Constants

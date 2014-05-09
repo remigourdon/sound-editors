@@ -2,8 +2,8 @@
  * Implements the Generator interface to create sine waves.
  */
 public class SineGenerator Implements Generator {
-    public byte[] generate(int f, double d, int sr) {
-        byte[] sin = new byte[d / 1000 * sr];
+    public byte[] generate(int f, int d, int sr) {
+        byte[] sin = new byte[d * sr];
 
         double samplingInterval = (double) (sr / f);
 
