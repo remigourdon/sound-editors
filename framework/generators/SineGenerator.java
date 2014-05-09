@@ -1,3 +1,5 @@
+package framework.generators;
+
 /**
  * Implements the Generator interface to create sine waves.
  */
