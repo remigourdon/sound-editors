@@ -22,6 +22,22 @@ public class Player {
         list = new ArrayList<Sound>();
     }
 
+    /**
+     * Add the specified Sound to the list.
+     * @param s the sound to be added
+     */
+    public void addSound(Sound s) {
+        list.add(s);
+    }
+
+    /**
+     * Remove the specified Sound from the list.
+     * @param s the Sound to be removed
+     */
+    public void removeSound(Sound s) {
+        list.remove(s);
+    }
+
     private final SourceDataLine    line;
     private ArrayList<Sound>        list;
 
