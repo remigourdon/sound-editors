@@ -53,6 +53,14 @@ public class Sound extends Observable {
         return duration;
     }
 
+    /**
+     * Get the data of the Sound.
+     * @return the data as an array of bytes
+     */
+    public byte[] getData() {
+        return data;
+    }
+
     private Generator           generator;
     private int                 frequency;  // Hertzs
     private int                 duration;   // Seconds
