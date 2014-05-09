@@ -60,7 +60,7 @@ public class Player {
     public byte[] mix(ArrayList<Sound> l) {
         int maxDuration = 0;
 
-        foreach(Sound s : l) {
+        for(Sound s : l) {
             if(s.getDuration() > maxDuration)
                 maxDuration = s.getDuration();
         }
@@ -68,7 +68,7 @@ public class Player {
         byte[] result = new byte[maxDuration * SAMPLE_RATE];
 
         for(int i = 0; i < result.length; i++) {
-            foreach(Sound s : l) {
+            for(Sound s : l) {
                 byte[i] = (byte)(s.getData()[i] + byte[i]);
                 if(i + 1 >= s.getData().length)
                     l.remove(s);
@@ -76,6 +76,21 @@ public class Player {
         }
 
         return result;
+    }
+
+    /**
+     * Play all the Sound objects which are not muted.
+     */
+    public void play() {
+        ArrayList<Sound> selection = new ArrayList<Sound>();
+
+        for(Map.Entry<Sound, boolean> entry : map.entrySet()) {
+            if(entry.getValue())
+                selection.add(entry.getKey());
+        }
+
+        byte[] theMix = mix(selection);
+        line.write(theMix, 0, theMix.length);
     }
 
     private final SourceDataLine    line;
