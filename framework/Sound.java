@@ -7,10 +7,11 @@ import framework.editors.SoundEditor;
  * Represents a sound entity.
  *
  * A sound is represented basically by a frequency and a duration.
+ * The basic wave is synthetised using a generator object.
  * It can then be modified by adding different modifiers.
  * It is the core of the model in our MVC design pattern implementation.
  */
-public abstract class Sound extends Observable {
+public class Sound extends Observable {
     /**
      * Creates a Sound object.
      */
