@@ -1,14 +1,12 @@
 package framework;
 
 import java.util.ArrayList;
-import framework.editors.SoundEditor;
 
 /**
  * Represents a sound entity.
  *
  * A sound is represented basically by a frequency and a duration.
  * The basic wave is synthetised using a generator object.
- * It can then be modified by adding different modifiers.
  * It is the core of the model in our MVC design pattern implementation.
  */
 public class Sound extends Observable {
@@ -23,42 +21,20 @@ public class Sound extends Observable {
         frequency   = f;
         duration    = d;
         data        = null;
-        modifiers   = new ArrayList<Modifier>();
 
         generateSignal();
     }
 
     /**
-     * Generate the signal data from the basic wave and modifiers.
+     * Generate the signal data from the basic wave.
      */
     public void generateSignal() {
         byte[] signal = generator.generate(frequency, duration, SAMPLE_RATE);
-
-        foreach(Modifier m : modifiers)
-            signal = m.apply(signal);
 
         data = signal;
 
         setChanged();
         notifyObservers(data);
-    }
-
-    /**
-     * Add a new Modifier to the list.
-     * @param m the new Modifier to be added
-     */
-    public void addModifier(Modifier m) {
-        modifiers.add(m);
-        generateSignal();
-    }
-
-    /**
-     * Remove the specified Modifier from the list.
-     * @param m the Modifier to be removed
-     */
-    public void removeModifier(Modifier m) {
-        modifiers.remove(m);
-        generateSignal();
     }
 
     /**
@@ -73,7 +49,6 @@ public class Sound extends Observable {
     private int                 frequency;  // Hertzs
     private double              duration;   // Milliseconds
     private byte[]              data;
-    private ArrayList<Modifier> modifiers;
 
     // Constants
     private final int SAMPLE_RATE   = 44100;    // CD quality audio
