@@ -46,4 +46,8 @@ public abstract class Sound extends Observable {
     private double              duration;   // Milliseconds
     private byte[]              data;
     private ArrayList<Modifier> modifiers;
+
+    // Constants
+    private final int SAMPLE_RATE   = 44100;    // CD quality audio
+    private final int MAX_16_BITS   = Short.MAX_VALUE;
 }
