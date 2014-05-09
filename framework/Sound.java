@@ -22,6 +22,8 @@ public class Sound extends Observable {
         generator   = g;
         frequency   = f;
         duration    = d;
+        data        = null;
+        modifiers   = new ArrayList<Modifier>();
 
         generateSignal();
     }
@@ -43,7 +45,8 @@ public class Sound extends Observable {
      * @param m the new Modifier to be added
      */
     public void addModifier(Modifier m) {
-
+        modifiers.add(m);
+        generateSignal();
     }
 
     /**
@@ -51,7 +54,8 @@ public class Sound extends Observable {
      * @param m the Modifier to be removed
      */
     public void removeModifier(Modifier m) {
-
+        modifiers.remove(m);
+        generateSignal();
     }
 
     /**
