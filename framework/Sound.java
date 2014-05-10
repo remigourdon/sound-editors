@@ -17,11 +17,13 @@ public class Sound extends Observable {
      * @param  g the generator to be used
      * @param  f the frequency of the signal
      * @param  d the duration of the sound
+     * @param  a the amplitude of the sound
      */
-    public Sound(Generator g, double f, double d) {
+    public Sound(Generator g, double f, double d, double a) {
         generator   = g;
         frequency   = f;
         duration    = d;
+        amplitude   = a;
 
         generateSignal();
     }

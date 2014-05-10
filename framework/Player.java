@@ -3,10 +3,12 @@ package framework;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.DataLine;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import framework.Sound;
+import framework.generators.Generator;
 
 /**
  * Manage a list of Sound objects.
@@ -15,14 +17,23 @@ import framework.Sound;
  */
 public class Player {
     public Player() {
-        final AudioFormat af = new AudioFormat(
-            Generator.SAMPLE_RATE, BITS_PER_SAMPLE, 1, true, true);
-
         try {
-            line = AudioSystem.getSourceDataLine(af);
-            line.open();
-        } catch(Exception e) {
-            e.printStackTrace();
+            // 44,100 samples per second, 16-bit audio, mono, signed PCM, little Endian
+            AudioFormat format = new AudioFormat(
+                (float) Generator.SAMPLE_RATE, BITS_PER_SAMPLE, 1, true, false);
+
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format, SAMPLE_BUFFER_SIZE * BYTES_PER_SAMPLE);
+
+            // The internal buffer is a fraction of the actual buffer size
+            // It gets divided because we can't expect the buffered data to line up
+            // exactly with when the sound card decides to push out its samples.
+            buffer = new byte[SAMPLE_BUFFER_SIZE * BYTES_PER_SAMPLE/3];
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
 
         playlist = new HashMap<Sound, Boolean>();
@@ -57,54 +68,49 @@ public class Player {
     }
 
     /**
-     * Mix the Sound objects contains in the list.
-     * @param  l the list of Sound objects to be mixed
-     * @return   the byte array containing the mix
-     */
-    public byte[] mix(ArrayList<Sound> l) {
-        int maxDuration = 0;
-
-        for(Sound s : l) {
-            if(s.getDuration() > maxDuration)
-                maxDuration = s.getDuration();
-        }
-
-        byte[] result = new byte[maxDuration * SAMPLE_RATE];
-
-        for(int i = 0; i < result.length; i++) {
-            ArrayList<Sound> done = new ArrayList<Sound>();
-            for(Sound s : l) {
-                result[i] = (byte)(s.getData()[i] + result[i]);
-                if(i + 1 >= s.getData().length)
-                    done.add(s);
-            }
-            l.removeAll(done);
-        }
-
-        return result;
-    }
-
-    /**
      * Play all the Sound objects which are not muted.
      */
     public void play() {
         ArrayList<Sound> selection = new ArrayList<Sound>();
 
         for(Map.Entry<Sound, Boolean> entry : playlist.entrySet()) {
-            if(entry.getValue())
-                selection.add(entry.getKey());
+            if(entry.getValue()) {
+
+            }
         }
 
-        byte[] theMix = mix(selection);
         line.start();
-        line.write(theMix, 0, theMix.length);
-        line.stop();
+
+        double[] data = entry.getKey().getData();
+                for(int i = 0; i < data.length; i++) {
+                    // Clip
+                    if (data[i] < -1.0) data[i] = -1.0;
+                    if (data[i] > +1.0) data[i] = +1.0;
+
+                    // Convert to bytes
+                    short s = (short) (MAX_16_BIT * data[i]);
+                    buffer[bufferSize++] = (byte) s;
+                    buffer[bufferSize++] = (byte) (s >> 8);   // little Endian
+
+                    // Send to sound card if buffer is full
+                    if (bufferSize >= buffer.length) {
+                        line.write(buffer, 0, buffer.length);
+                        bufferSize = 0;
+                    }
+                }
+
         line.drain();
+        line.stop();
     }
 
     private SourceDataLine              line;
     private HashMap<Sound, Boolean>     playlist;
+    private byte[]                      buffer; // Internal buffer
+    private int                         bufferSize = 0; // Current number of samples in buffer
 
     // Constants
-    private final int BITS_PER_SAMPLE   = 16;
+    private final int       BYTES_PER_SAMPLE    = 2;
+    private final int       BITS_PER_SAMPLE     = 16;
+    private final double    MAX_16_BIT          = Short.MAX_VALUE;
+    private final int       SAMPLE_BUFFER_SIZE  = 4096;
 }
