@@ -73,11 +73,7 @@ public class Player {
     public void play() {
         ArrayList<Sound> selection = new ArrayList<Sound>();
 
-        for(Map.Entry<Sound, Boolean> entry : playlist.entrySet()) {
-            if(entry.getValue()) {
 
-            }
-        }
 
         line.start();
 
@@ -101,6 +97,19 @@ public class Player {
 
         line.drain();
         line.stop();
+    }
+
+    /**
+     * Get all the Sound objects that are not muted.
+     * @return The list of Sound objects
+     */
+    public ArrayList<Sound> getPlayableSounds() {
+        ArrayList<Sound> selection = new ArrayList<Sound>();
+        for(Map.Entry<Sound, Boolean> entry : playlist.entrySet()) {
+            if(entry.getValue())
+                selection.add(entry.getKey());
+        }
+        return selection;
     }
 
     private SourceDataLine              line;
