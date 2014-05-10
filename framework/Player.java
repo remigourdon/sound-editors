@@ -71,29 +71,39 @@ public class Player {
      * Play all the Sound objects which are not muted.
      */
     public void play() {
-        ArrayList<Sound> selection = new ArrayList<Sound>();
-
-
+        ArrayList<Sound> selection = getPlayableSounds();
 
         line.start();
 
-        double[] data = entry.getKey().getData();
-                for(int i = 0; i < data.length; i++) {
+        // Find the maximum duration
+        double maxDuration = 0;
+        for(Sound s : selection) {
+            if(s.getDuration() > maxDuration)
+                maxDuration = s.getDuration();
+        }
+
+        for(int i = 0; i < (int) (maxDuration * Generator.SAMPLE_RATE); i++) {
+            short sh = 0;
+            for(Sound s : selection) {
+                if(i < (int) (s.getDuration() * Generator.SAMPLE_RATE)) {
+                    double[] data = s.getData();
+
                     // Clip
                     if (data[i] < -1.0) data[i] = -1.0;
                     if (data[i] > +1.0) data[i] = +1.0;
 
-                    // Convert to bytes
-                    short s = (short) (MAX_16_BIT * data[i]);
-                    buffer[bufferSize++] = (byte) s;
-                    buffer[bufferSize++] = (byte) (s >> 8);   // little Endian
-
-                    // Send to sound card if buffer is full
-                    if (bufferSize >= buffer.length) {
-                        line.write(buffer, 0, buffer.length);
-                        bufferSize = 0;
-                    }
+                    sh = (short) ((MAX_16_BIT * data[i]) + sh);
                 }
+            }
+            buffer[bufferSize++] = (byte) sh;
+            buffer[bufferSize++] = (byte) (sh >> 8);   // little Endian
+
+            // Send to sound card if buffer is full
+            if (bufferSize >= buffer.length) {
+                line.write(buffer, 0, buffer.length);
+                bufferSize = 0;
+            }
+        }
 
         line.drain();
         line.stop();
