@@ -3,7 +3,7 @@ import java.util.*;
 import java.util.Observer;
 
 /**
- * According to the Observer pattern, each view must extend this interface.
+ * According to the Observer pattern, each view must implement this interface.
  *
  */
 public interface View implements Observer {
