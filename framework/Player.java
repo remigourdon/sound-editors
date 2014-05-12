@@ -68,15 +68,40 @@ public class Player {
     }
 
     /**
+     * Play a Sound object.
+     * @param s the Sound object to be played
+     */
+    public void play(Sound s) {
+        Double[] data = s.getData();
+
+        for(int i = 0; i < s.getDuration() * Generator.SAMPLE_RATE; i++) {
+            // Clip
+            if (data[i] < -1.0) data[i] = -1.0;
+            if (data[i] > +1.0) data[i] = +1.0;
+
+            short sh = (short) (MAX_16_BIT * data[i]);
+
+            buffer[bufferSize++] = (byte) sh;
+            buffer[bufferSize++] = (byte) (sh >> 8);   // Little Endian
+
+            // Send to sound card if buffer is full
+            if (bufferSize >= buffer.length) {
+                line.write(buffer, 0, buffer.length);
+                bufferSize = 0;
+            }
+        }
+    }
+
+    /**
      * Play all the Sound objects which are not muted.
      */
-    public void play() {
+    public void playAll() {
         ArrayList<Sound> selection = getPlayableSounds();
 
         line.start();
 
         // Find the maximum duration
-        double maxDuration = 0;
+        Double maxDuration = new Double(0);
         for(Sound s : selection) {
             if(s.getDuration() > maxDuration)
                 maxDuration = s.getDuration();
@@ -86,7 +111,7 @@ public class Player {
             short sh = 0;
             for(Sound s : selection) {
                 if(i < (int) (s.getDuration() * Generator.SAMPLE_RATE)) {
-                    double[] data = s.getData();
+                    Double[] data = s.getData();
 
                     // Clip
                     if (data[i] < -1.0) data[i] = -1.0;
@@ -96,7 +121,7 @@ public class Player {
                 }
             }
             buffer[bufferSize++] = (byte) sh;
-            buffer[bufferSize++] = (byte) (sh >> 8);   // little Endian
+            buffer[bufferSize++] = (byte) (sh >> 8);   // Little Endian
 
             // Send to sound card if buffer is full
             if (bufferSize >= buffer.length) {
@@ -130,6 +155,6 @@ public class Player {
     // Constants
     private final int       BYTES_PER_SAMPLE    = 2;
     private final int       BITS_PER_SAMPLE     = 16;
-    private final double    MAX_16_BIT          = Short.MAX_VALUE;
+    private final Double    MAX_16_BIT          = new Double(Short.MAX_VALUE);
     private final int       SAMPLE_BUFFER_SIZE  = 4096;
 }

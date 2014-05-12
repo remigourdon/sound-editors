@@ -3,6 +3,7 @@ package framework;
 import java.util.ArrayList;
 import java.util.Observable;
 import framework.generators.Generator;
+import framework.editors.SoundEditor;
 
 /**
  * Represents a sound entity.
@@ -19,7 +20,7 @@ public class Sound extends Observable {
      * @param  d the duration of the sound
      * @param  a the amplitude of the sound
      */
-    public Sound(Generator g, double f, double d, double a) {
+    public Sound(Generator g, Double f, Double d, Double a) {
         generator   = g;
         frequency   = f;
         duration    = d;
@@ -32,33 +33,89 @@ public class Sound extends Observable {
      * Generate the signal data from the basic wave.
      */
     public void generateSignal() {
-        double[] signal = generator.generate(frequency, duration, amplitude);
+        Double[] signal = generator.generate(frequency, duration, amplitude);
 
         data = signal;
 
         setChanged();
-        notifyObservers(data);
+        notifyObservers(true);  // Signal to observers that the data has changed
+    }
+
+    /**
+     * Attach a new SoundEditor to the Sound object.
+     * @return the SoundEditor newly attached
+     */
+    public SoundEditor attachEditor() {
+        SoundEditor editor = new SoundEditor(this);
+        addObserver(editor);
+        return editor;
+    }
+
+
+    /**
+     * Get the frequency of the Sound.
+     * @return the frequency in hertz
+     */
+    public Double getFrequency() {
+        return frequency;
+    }
+
+    /**
+     * Set the frequency of the Sound.
+     * @param f the new frequency in hertz
+     */
+    public void setFrequency(Double f) {
+        if(f > 0) {
+            frequency = f;
+            generateSignal();
+        }
     }
 
     /**
      * Get the duration of the Sound.
      * @return the duration in seconds
      */
-    public double getDuration() {
+    public Double getDuration() {
         return duration;
     }
 
     /**
-     * Get the data of the Sound.
-     * @return the data as an array of doubles
+     * Set the duration of the Sound.
+     * @param d the new duration in seconds
      */
-    public double[] getData() {
+    public void setDuration(Double d) {
+        if(d > 0) {
+            duration = d;
+            generateSignal();
+        }
+    }
+
+    /**
+     * Get the amplitude of the Sound.
+     * @return the amplitude
+     */
+    public Double getAmplitude() {
+        return amplitude;
+    }
+
+    public void setAmplitude(Double a) {
+        if(a > 0) {
+            amplitude = a;
+            generateSignal();
+        }
+    }
+
+    /**
+     * Get the data of the Sound.
+     * @return the data as an array of Doubles
+     */
+    public Double[] getData() {
         return data;
     }
 
     private Generator           generator;
-    private double              frequency;  // Hertzs
-    private double              duration;   // Seconds
-    private double              amplitude;
-    private double[]            data;
+    private Double              frequency;  // Hertzs
+    private Double              duration;   // Seconds
+    private Double              amplitude;
+    private Double[]            data;
 }
