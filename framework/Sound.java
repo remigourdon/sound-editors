@@ -49,6 +49,22 @@ public class Sound extends Observable {
     }
 
     /**
+     * Get the frequency of the Sound.
+     * @return the frequency in hertz
+     */
+    public double getFrequency() {
+        return frequency;
+    }
+
+    /**
+     * Get the amplitude of the Sound.
+     * @return the amplitude
+     */
+    public double getAmplitude() {
+        return amplitude;
+    }
+
+    /**
      * Get the data of the Sound.
      * @return the data as an array of doubles
      */
