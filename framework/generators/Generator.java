@@ -18,8 +18,9 @@ public abstract class Generator {
      * @return an array containing prototypes
      */
     public static Generator[] getPrototypes() {
-        Generator[] prototypes = new Generator[1];
+        Generator[] prototypes = new Generator[2];
         prototypes[0] = new SineGenerator();
+        prototypes[1] = new SquareGenerator();
         return prototypes;
     }
 

@@ -132,6 +132,7 @@ public class Sound extends Observable {
      */
     public void setGenerator(Generator g) {
         generator = g;
+        generateSignal();
     }
 
     /**
