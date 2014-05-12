@@ -23,9 +23,9 @@ public class BasicEditor extends Editor {
 
         for(Sound s : player.getAllSounds()) {
             JPanel linePanel = new JPanel();
-            TemporalView v = new TemporalView();
-            s.attachView(v);
-            linePanel.add(v);
+            //TemporalView v = new TemporalView();
+            //s.attachView(v);
+            //linePanel.add(v);
             linePanel.add(s.attachEditor());
             centralComponent.add(linePanel);
         }

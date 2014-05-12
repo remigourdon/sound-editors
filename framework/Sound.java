@@ -57,9 +57,9 @@ public class Sound extends Observable {
      * Attach a new View to the Sound object.
      * @param v the View to be attached
      */
-    public void attachView(View v) {
-        addObserver(v);
-    }
+    // public void attachView(View v) {
+    //     addObserver(v);
+    // }
 
     /**
      * Get the frequency of the Sound.
