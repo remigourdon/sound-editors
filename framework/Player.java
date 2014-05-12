@@ -137,7 +137,7 @@ public class Player extends Observable {
 
     /**
      * Get all the Sound objects that are not muted.
-     * @return The list of Sound objects
+     * @return the list of playable Sound objects
      */
     public ArrayList<Sound> getPlayableSounds() {
         ArrayList<Sound> selection = new ArrayList<Sound>();
@@ -146,6 +146,14 @@ public class Player extends Observable {
                 selection.add(entry.getKey());
         }
         return selection;
+    }
+
+    /**
+     * Get all the Sound objects in the Player.
+     * @return the array of all Sound objects
+     */
+    public Sound[] getAllSounds() {
+        return (Sound[]) playlist.keySet().toArray();
     }
 
     private SourceDataLine              line;
