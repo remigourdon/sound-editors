@@ -1,5 +1,7 @@
 import java.util.Observable;
 import javax.swing.*;
+import java.util.Observer;
+
 
 /**
  *	TemporalView provides a View corresponding to the Observer Pattern (MVC ?!).
