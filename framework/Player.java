@@ -76,7 +76,7 @@ public class Player {
         line.start();
 
         // Find the maximum duration
-        double maxDuration = 0;
+        Double maxDuration = new Double(0);
         for(Sound s : selection) {
             if(s.getDuration() > maxDuration)
                 maxDuration = s.getDuration();
@@ -86,7 +86,7 @@ public class Player {
             short sh = 0;
             for(Sound s : selection) {
                 if(i < (int) (s.getDuration() * Generator.SAMPLE_RATE)) {
-                    double[] data = s.getData();
+                    Double[] data = s.getData();
 
                     // Clip
                     if (data[i] < -1.0) data[i] = -1.0;
@@ -130,6 +130,6 @@ public class Player {
     // Constants
     private final int       BYTES_PER_SAMPLE    = 2;
     private final int       BITS_PER_SAMPLE     = 16;
-    private final double    MAX_16_BIT          = Short.MAX_VALUE;
+    private final Double    MAX_16_BIT          = new Double(Short.MAX_VALUE);
     private final int       SAMPLE_BUFFER_SIZE  = 4096;
 }

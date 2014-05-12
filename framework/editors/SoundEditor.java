@@ -20,17 +20,17 @@ public class SoundEditor extends JPanel {
 
         // Frequency input
         add(new JLabel("Frequency:"));
-        frequencyField  = new JTextField(String.valueOf(sound.getFrequency()));
+        frequencyField  = new JTextField(sound.getFrequency().toString());
         add(frequencyField);
 
         // Duration input
         add(new JLabel("Duration:"));
-        durationField   = new JTextField(String.valueOf(sound.getDuration()));
+        durationField   = new JTextField(sound.getDuration().toString());
         add(durationField);
 
         // Amplitude input
         add(new JLabel("Amplitude:"));
-        amplitudeField  = new JTextField(String.valueOf(sound.getAmplitude()));
+        amplitudeField  = new JTextField(sound.getAmplitude().toString());
         add(amplitudeField);
     }
 
