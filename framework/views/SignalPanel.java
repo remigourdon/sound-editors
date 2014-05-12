@@ -10,7 +10,6 @@ import java.lang.Double;
  */
 public class SignalPanel extends JPanel {
     
-
     @Override
     protected void paintComponent(Graphics g) {
     	// calling mother's method
@@ -24,8 +23,9 @@ public class SignalPanel extends JPanel {
     }
 
     /**
-     * Defines the fundamentals aspect settings.
-     * Helper method.
+     * Defines the fundamentals aspects settings
+     * Helper method
+     * 
      * 
      */
     private void init(){
@@ -39,41 +39,44 @@ public class SignalPanel extends JPanel {
     	bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB);
     	
     	g2 = bufferedImage.createGraphics();
-    	g2.setBackground(Color.white);
+    	g2.setBackground(Color.black);
     	
-    	//g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-        //        RenderingHints.VALUE_ANTIALIAS_ON);
+    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
     }
     
     /**
      * Main method of this class.
      * Draws the waveform.
-     * @param	Double	buffer	the data to be plotted
+     * @param	Double	buffer	the data array to be plotted
      */
     public void drawData(Double[] buffer) {
     	// Data display settings
-    	g2.setColor(Color.RED);
+    	g2.setColor(Color.white);
     	g2.clearRect( 0, 0, width, height);
     	
     	// run through the buffer
     	for(int i = 0 ; i < buffer.length ; i++) {
-    		double sample = (double) buffer[0];
+    		double prevPoint = (double) buffer[i];
+    		// draw( x1, y1, x2, y2)
+    		// Previous point = (x1,y1) & Current point = (x2,y2)
     		g2.draw( new Line2D.Double(
     				buffer.length - i ,
-    				sampleOld + height/2 ,
+    				currentPoint + height/2 ,
     				buffer.length - (i+1),
-    				sample + height/2
+    				prevPoint + height/2
     				));
     		
-    		sampleOld = sample;
+    		System.out.println("Buffer = "+ buffer[i]);
+    		currentPoint = prevPoint;
+    		
     	}
-	// Calls paintComponent()
     	repaint();
     }
 
     private int width;
     private int height;
-    private double sampleOld;
+    private double currentPoint;
     private Graphics2D g2;
     private BufferedImage bufferedImage;
     
