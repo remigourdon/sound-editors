@@ -38,7 +38,7 @@ public class Sound extends Observable {
         data = signal;
 
         setChanged();
-        notifyObservers(data);
+        notifyObservers(true);  // Signal to observers that the data has changed
     }
 
     /**
@@ -46,7 +46,29 @@ public class Sound extends Observable {
      * @return the SoundEditor newly attached
      */
     public SoundEditor attachEditor() {
-        return editor = new SoundEditor(this);
+        SoundEditor editor = new SoundEditor(this);
+        addObserver(editor);
+        return editor;
+    }
+
+
+    /**
+     * Get the frequency of the Sound.
+     * @return the frequency in hertz
+     */
+    public Double getFrequency() {
+        return frequency;
+    }
+
+    /**
+     * Set the frequency of the Sound.
+     * @param f the new frequency in hertz
+     */
+    public void setFrequency(Double f) {
+        if(f > 0) {
+            frequency = f;
+            generateSignal();
+        }
     }
 
     /**
@@ -58,11 +80,14 @@ public class Sound extends Observable {
     }
 
     /**
-     * Get the frequency of the Sound.
-     * @return the frequency in hertz
+     * Set the duration of the Sound.
+     * @param d the new duration in seconds
      */
-    public Double getFrequency() {
-        return frequency;
+    public void setDuration(Double d) {
+        if(d > 0) {
+            duration = d;
+            generateSignal();
+        }
     }
 
     /**
@@ -71,6 +96,13 @@ public class Sound extends Observable {
      */
     public Double getAmplitude() {
         return amplitude;
+    }
+
+    public void setAmplitude(Double a) {
+        if(a > 0) {
+            amplitude = a;
+            generateSignal();
+        }
     }
 
     /**
@@ -86,6 +118,4 @@ public class Sound extends Observable {
     private Double              duration;   // Seconds
     private Double              amplitude;
     private Double[]            data;
-
-    private SoundEditor         editor;
 }
