@@ -24,7 +24,8 @@ public class SignalPanel extends JPanel {
     }
 
     /**
-     * 
+     * Defines the fundamentals aspect settings.
+     * Helper method.
      * 
      */
     private void init(){
@@ -40,8 +41,8 @@ public class SignalPanel extends JPanel {
     	g2 = bufferedImage.createGraphics();
     	g2.setBackground(Color.white);
     	
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+    	//g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        //        RenderingHints.VALUE_ANTIALIAS_ON);
     }
     
     /**
@@ -66,6 +67,7 @@ public class SignalPanel extends JPanel {
     		
     		sampleOld = sample;
     	}
+	// Calls paintComponent()
     	repaint();
     }
 
