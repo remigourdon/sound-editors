@@ -7,6 +7,7 @@ import javax.sound.sampled.DataLine;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Observable;
 import framework.Sound;
 import framework.generators.Generator;
 
@@ -15,7 +16,7 @@ import framework.generators.Generator;
  *
  * This class provides methods to play, pause and mix different sounds.
  */
-public class Player {
+public class Player extends Observable {
     public Player() {
         try {
             // 44,100 samples per second, 16-bit audio, mono, signed PCM, little Endian
@@ -136,7 +137,7 @@ public class Player {
 
     /**
      * Get all the Sound objects that are not muted.
-     * @return The list of Sound objects
+     * @return the list of playable Sound objects
      */
     public ArrayList<Sound> getPlayableSounds() {
         ArrayList<Sound> selection = new ArrayList<Sound>();
@@ -145,6 +146,14 @@ public class Player {
                 selection.add(entry.getKey());
         }
         return selection;
+    }
+
+    /**
+     * Get all the Sound objects in the Player.
+     * @return the array of all Sound objects
+     */
+    public ArrayList<Sound> getAllSounds() {
+        return new ArrayList(playlist.keySet());
     }
 
     private SourceDataLine              line;

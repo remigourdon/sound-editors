@@ -13,3 +13,6 @@ hs_err_pid*
 
 # Test file
 TestEditor.java
+
+# emacs backup file
+*.java~

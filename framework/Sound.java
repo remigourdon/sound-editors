@@ -65,9 +65,12 @@ public class Sound extends Observable {
      * @param f the new frequency in hertz
      */
     public void setFrequency(Double f) {
-        if(f > 0) {
+        if(f >= 0) {
             frequency = f;
             generateSignal();
+        } else {
+            setChanged();
+            notifyObservers(false);
         }
     }
 
@@ -84,9 +87,12 @@ public class Sound extends Observable {
      * @param d the new duration in seconds
      */
     public void setDuration(Double d) {
-        if(d > 0) {
+        if(d >= 0) {
             duration = d;
             generateSignal();
+        } else {
+            setChanged();
+            notifyObservers(false);
         }
     }
 
@@ -98,11 +104,35 @@ public class Sound extends Observable {
         return amplitude;
     }
 
+    /**
+     * Set the amplitude of the Sound.
+     * @param a the new amplitude
+     */
     public void setAmplitude(Double a) {
-        if(a > 0) {
+        if(a >= 0) {
             amplitude = a;
             generateSignal();
+        } else {
+            setChanged();
+            notifyObservers(false);
         }
+    }
+
+    /**
+     * Get the generator of the Sound.
+     * @return the generator
+     */
+    public Generator getGenerator() {
+        return generator;
+    }
+
+    /**
+     * Set the generator of the Sound
+     * @param g the new generator
+     */
+    public void setGenerator(Generator g) {
+        generator = g;
+        generateSignal();
     }
 
     /**

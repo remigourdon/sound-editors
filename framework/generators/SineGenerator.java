@@ -13,4 +13,8 @@ public class SineGenerator extends Generator {
 
         return result;
     }
+
+    public String toString() {
+        return "Sine Wave";
+    }
 }

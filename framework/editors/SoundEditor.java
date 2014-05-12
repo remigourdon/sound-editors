@@ -5,9 +5,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
 import java.util.Observable;
 import java.util.Observer;
+
 import framework.Sound;
+import framework.generators.Generator;
 
 /**
  * Editor for Sound object.
@@ -21,6 +24,16 @@ public class SoundEditor extends JPanel implements Observer {
      */
     public SoundEditor(Sound s) {
         sound = s;
+
+        // Generator selector
+        final JComboBox generatorsList = new JComboBox(Generator.getPrototypes());
+        generatorsList.setSelectedItem(sound.getGenerator());
+        generatorsList.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                sound.setGenerator((Generator) generatorsList.getSelectedItem());
+            }
+        });
+        add(generatorsList);
 
         // Frequency input
         add(new JLabel("Frequency:"));
