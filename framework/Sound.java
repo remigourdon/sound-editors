@@ -2,8 +2,10 @@ package framework;
 
 import java.util.ArrayList;
 import java.util.Observable;
+
 import framework.generators.Generator;
 import framework.editors.SoundEditor;
+import framework.views.View;
 
 /**
  * Represents a sound entity.
@@ -51,6 +53,13 @@ public class Sound extends Observable {
         return editor;
     }
 
+    /**
+     * Attach a new View to the Sound object.
+     * @param v the View to be attached
+     */
+    public void attachView(View v) {
+        addObserver(v);
+    }
 
     /**
      * Get the frequency of the Sound.
