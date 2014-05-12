@@ -68,6 +68,31 @@ public class Player {
     }
 
     /**
+     * Play a Sound object.
+     * @param s the Sound object to be played
+     */
+    public void play(Sound s) {
+        Double[] data = s.getData();
+
+        for(int i = 0; i < s.getDuration() * Generator.SAMPLE_RATE; i++) {
+            // Clip
+            if (data[i] < -1.0) data[i] = -1.0;
+            if (data[i] > +1.0) data[i] = +1.0;
+
+            short sh = (short) (MAX_16_BIT * data[i]);
+
+            buffer[bufferSize++] = (byte) sh;
+            buffer[bufferSize++] = (byte) (sh >> 8);   // Little Endian
+
+            // Send to sound card if buffer is full
+            if (bufferSize >= buffer.length) {
+                line.write(buffer, 0, buffer.length);
+                bufferSize = 0;
+            }
+        }
+    }
+
+    /**
      * Play all the Sound objects which are not muted.
      */
     public void playAll() {
@@ -96,7 +121,7 @@ public class Player {
                 }
             }
             buffer[bufferSize++] = (byte) sh;
-            buffer[bufferSize++] = (byte) (sh >> 8);   // little Endian
+            buffer[bufferSize++] = (byte) (sh >> 8);   // Little Endian
 
             // Send to sound card if buffer is full
             if (bufferSize >= buffer.length) {
