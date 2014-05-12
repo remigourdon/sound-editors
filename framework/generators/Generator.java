@@ -23,6 +23,8 @@ public abstract class Generator {
         return prototypes;
     }
 
+    public abstract String toString();
+
     // Constants
     public static final int SAMPLE_RATE   = 44100;    // CD quality audio
 }
