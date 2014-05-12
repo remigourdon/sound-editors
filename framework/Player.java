@@ -75,6 +75,8 @@ public class Player extends Observable {
     public void play(Sound s) {
         Double[] data = s.getData();
 
+        line.start();
+
         for(int i = 0; i < s.getDuration() * Generator.SAMPLE_RATE; i++) {
             // Clip
             if (data[i] < -1.0) data[i] = -1.0;
@@ -91,6 +93,11 @@ public class Player extends Observable {
                 bufferSize = 0;
             }
         }
+
+        line.drain();
+        line.stop();
+
+        bufferSize = 0;
     }
 
     /**
@@ -133,6 +140,8 @@ public class Player extends Observable {
 
         line.drain();
         line.stop();
+
+        bufferSize = 0;
     }
 
     /**
