@@ -152,8 +152,8 @@ public class Player extends Observable {
      * Get all the Sound objects in the Player.
      * @return the array of all Sound objects
      */
-    public Sound[] getAllSounds() {
-        return (Sound[]) playlist.keySet().toArray();
+    public ArrayList<Sound> getAllSounds() {
+        return new ArrayList(playlist.keySet());
     }
 
     private SourceDataLine              line;
