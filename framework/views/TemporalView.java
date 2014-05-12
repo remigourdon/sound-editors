@@ -1,35 +1,39 @@
-import javax.swing.JFrame;
-
-
-
+import java.util.Observable;
+import javax.swing.*;
 
 /**
- *
+ *	TemporalView provides a View corresponding to the Observer Pattern (MVC ?!).
+ *	It uses the SignalPanel class to draw a temporal representation of the model's buffer.
  *
  */
 public class TemporalView extends JFrame implements View {
-
-    /*-----------------------------*/    
-    /*OBSERVER PATTERN REQUIREMENTS*/
-    /*-----------------------------*/
     
     /**
-     * The update method is called when a change occurs in the model (theSound)
-     * @param Observable o   The sound model
-     * @param Object     obj The data array (corresponding to the sound)
+     * Implementation of view's method.
+     * 
+     * 
+     * The update method is called when a change occurs in the model (theSound).
+     * @param Observable o   			The sound model.
+     * @param Object     dataChanged 	Is a boolean indicating if the buffer has been modified.
+     * @Override
      */
-    public void update(Observable o, Object theData) {
+    public void update(Observable o, Object dataChanged) {
     	
-		// Retreiving the sound model
-		Sound s = o;
-		// Retreiving the sound buffer
-		data = theData;
+		// Retrieving the sound model
+		Sound s = (Sound) o;
+		// Retrieving the sound buffer
+		Double[] data = s.getData();
+		
+		
+		if( (boolean) dataChanged) { // Might not be required
+			signalPanel.drawData(data);
+		}
 		
     }
 
     /**
      * Build a TemporalView.
-     * @param Sound s The sound to be displayed
+     * @param Sound s The sound to be displayed.
      */
     public TemporalView(){
 	
@@ -38,15 +42,15 @@ public class TemporalView extends JFrame implements View {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(400, 200);
     
-    signal = new SignalPanel();
-    getContentPane().add(signal);
+    signalPanel = new SignalPanel();
+    getContentPane().add(signalPanel);
     
     setVisible(true);
 	
     }
     
     
-    // the waveforw display
-    SignalPanel signal;
+    // the waveform display
+    private SignalPanel signalPanel;
 
 }
