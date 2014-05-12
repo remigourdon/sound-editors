@@ -70,7 +70,7 @@ public class Player {
     /**
      * Play all the Sound objects which are not muted.
      */
-    public void play() {
+    public void playAll() {
         ArrayList<Sound> selection = getPlayableSounds();
 
         line.start();
