@@ -13,6 +13,16 @@ public abstract class Generator {
      */
     public abstract Double[] generate(Double f, Double d, Double a);
 
+    /**
+     * Get the prototypes of the generators.
+     * @return an array containing prototypes
+     */
+    public static Generator[] getPrototypes() {
+        Generator[] prototypes = new Generator[1];
+        prototypes[0] = new SineGenerator();
+        return prototypes;
+    }
+
     // Constants
     public static final int SAMPLE_RATE   = 44100;    // CD quality audio
 }
