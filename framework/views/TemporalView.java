@@ -1,3 +1,5 @@
+package framework.views;
+
 import java.util.Observable;
 import javax.swing.*;
 import java.util.Observer;
