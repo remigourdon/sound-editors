@@ -26,11 +26,11 @@ public class SoundEditor extends JPanel implements Observer {
         sound = s;
 
         // Generator selector
-        JComboBox generatorsList = new JComboBox(Generator.getPrototypes());
+        final JComboBox generatorsList = new JComboBox(Generator.getPrototypes());
         generatorsList.setSelectedItem(sound.getGenerator());
         generatorsList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                sound.setGenerator(generatorsList.getSelectedItem());
+                sound.setGenerator((Generator) generatorsList.getSelectedItem());
             }
         });
         add(generatorsList);
