@@ -59,5 +59,5 @@ public abstract class Editor extends JFrame implements Observer {
      */
     public abstract JComponent createCentralComponent();
 
-    private Player player;
+    protected Player player;
 }
