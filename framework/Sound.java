@@ -104,6 +104,10 @@ public class Sound extends Observable {
         return amplitude;
     }
 
+    /**
+     * Set the amplitude of the Sound.
+     * @param a the new amplitude
+     */
     public void setAmplitude(Double a) {
         if(a >= 0) {
             amplitude = a;
@@ -112,6 +116,22 @@ public class Sound extends Observable {
             setChanged();
             notifyObservers(false);
         }
+    }
+
+    /**
+     * Get the generator of the Sound.
+     * @return the generator
+     */
+    public Generator getGenerator() {
+        return generator;
+    }
+
+    /**
+     * Set the generator of the Sound
+     * @param g the new generator
+     */
+    public void setGenerator(Generator g) {
+        generator = g;
     }
 
     /**
