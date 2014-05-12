@@ -1,9 +1,9 @@
 package framework.generators;
 
 /**
- * Extends the Generator abstract class to create square waves.
+ * Extends the Generator abstract class to create triangle waves.
  */
-public class SquareGenerator extends Generator {
+public class TriangleGenerator extends Generator {
     public Double[] generate(Double f, Double d, Double a) {
         int N = (int)(Generator.SAMPLE_RATE * d);
         Double[] result = new Double[N+1];
@@ -12,9 +12,9 @@ public class SquareGenerator extends Generator {
 
         for(int i = 0; i <= N; i++) {
             if(phase < Math.PI)
-                result[i] = a;
+                result[i] = -a + (2 * a / Math.PI) * phase;
             else
-                result[i] = -a;
+                result[i] = 3 * a - (2 * a / Math.PI) * phase;
 
             phase += (2 * Math.PI * f) / Generator.SAMPLE_RATE;
 
@@ -26,6 +26,6 @@ public class SquareGenerator extends Generator {
     }
 
     public String toString() {
-        return "Square Wave";
+        return "Triangle Wave";
     }
 }
