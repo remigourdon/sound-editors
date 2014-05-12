@@ -1,7 +1,13 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import java.util.Observable;
 import java.util.Observer;
+
 import framework.Player;
 
 /**
@@ -24,6 +30,19 @@ public abstract class Editor extends JFrame implements Observer {
             this.getContentPane(),
             BoxLayout.Y_AXIS));
 
+        // Top panel
+        JPanel topPanel     = new JPanel();
+        JButton playAllButton  = new JButton("Play all");
+        playAllButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                player.playAll();
+            }
+        });
+        topPanel.add(playAllButton);
+
+        add(topPanel);
+        add(createCentralComponent());
+
         pack();
         setVisible(true);
     }
@@ -33,6 +52,12 @@ public abstract class Editor extends JFrame implements Observer {
 
         }
     }
+
+    /**
+     * Create the central component of the editor.
+     * @return the central component newly created
+     */
+    public abstract JComponent createCentralComponent();
 
     private Player player;
 }
