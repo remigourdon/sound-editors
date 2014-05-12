@@ -3,6 +3,7 @@ package framework;
 import java.util.ArrayList;
 import java.util.Observable;
 import framework.generators.Generator;
+import framework.editors.SoundEditor;
 
 /**
  * Represents a sound entity.
@@ -38,6 +39,14 @@ public class Sound extends Observable {
 
         setChanged();
         notifyObservers(data);
+    }
+
+    /**
+     * Attach a new SoundEditor to the Sound object.
+     * @return the SoundEditor newly attached
+     */
+    public SoundEditor attachEditor() {
+        return editor = new SoundEditor(this);
     }
 
     /**
@@ -77,4 +86,6 @@ public class Sound extends Observable {
     private double              duration;   // Seconds
     private double              amplitude;
     private double[]            data;
+
+    private SoundEditor         editor;
 }
