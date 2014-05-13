@@ -26,5 +26,5 @@ public class GeneratorPrototyper {
         return prototypes.toArray(new Generator[0]);
     }
 
-    private static ArrayList<Generator> prototypes;
+    private static ArrayList<Generator> prototypes = new ArrayList<Generator>();
 }
