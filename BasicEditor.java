@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import framework.editors.Editor;
 import framework.Sound;
 import framework.Player;
-import framework.views.TemporalView;
+//import framework.views.TemporalView;
 
 /**
  * Basic implementation of the framework.
