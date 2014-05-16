@@ -11,6 +11,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import framework.Player;
+import framework.generators.*;
 
 /**
  * Abstract class to support the main window of the application.
@@ -26,6 +27,8 @@ public abstract class Editor extends JFrame implements Observer {
     public Editor(Player pl, String name) {
         super(name);
         player = pl;
+
+        fillPrototyper();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BoxLayout(
@@ -60,6 +63,14 @@ public abstract class Editor extends JFrame implements Observer {
      * @return the central component newly created
      */
     public abstract JComponent createCentralComponent();
+
+    protected void fillPrototyper() {
+        // Add basic generators to the prototyper
+        GeneratorPrototyper.addGenerator(new SineGenerator());
+        GeneratorPrototyper.addGenerator(new SquareGenerator());
+        GeneratorPrototyper.addGenerator(new SawtoothGenerator());
+        GeneratorPrototyper.addGenerator(new TriangleGenerator());
+    }
 
     protected Player player;
 }

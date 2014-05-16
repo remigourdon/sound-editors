@@ -11,6 +11,7 @@ import java.util.Observer;
 
 import framework.Sound;
 import framework.generators.Generator;
+import framework.generators.GeneratorPrototyper;
 
 /**
  * Editor for Sound object.
@@ -26,7 +27,7 @@ public class SoundEditor extends JPanel implements Observer {
         sound = s;
 
         // Generator selector
-        final JComboBox generatorsList = new JComboBox(Generator.getPrototypes());
+        final JComboBox generatorsList = new JComboBox(GeneratorPrototyper.getPrototypes());
         generatorsList.setSelectedItem(sound.getGenerator());
         generatorsList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -13,20 +13,6 @@ public abstract class Generator {
      */
     public abstract Double[] generate(Double f, Double d, Double a);
 
-    /**
-     * Get the prototypes of the generators.
-     * @return an array containing prototypes
-     */
-    public static Generator[] getPrototypes() {
-        Generator[] prototypes = new Generator[4];
-        prototypes[0] = new SineGenerator();
-        prototypes[1] = new SquareGenerator();
-        prototypes[2] = new SawtoothGenerator();
-        prototypes[3] = new TriangleGenerator();
-
-        return prototypes;
-    }
-
     public abstract String toString();
 
     // Constants
