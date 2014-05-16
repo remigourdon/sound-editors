@@ -49,18 +49,19 @@ public class FFTView extends JPanel implements View {
     	height = h;
     	width = w;
     	
+    	
+    	
     }
     
     /**
      * Main method of this class.
-     * Draws the waveform.
+     * 
+     * Draws the corresponding FFT output of the given data signal.
      * @param	Double	data	the data array of the signal
      */
     public void drawData(Double[] data) {
 
     	/* -- Convert Double[] to double[] --  */
-        // LET'S MAKE IT A FLOAT[] !
-	
     	double[] res= new double[data.length];
     	for (int i = 0; i < data.length; i++) {
             res[i] = data[i].doubleValue();
@@ -70,16 +71,66 @@ public class FFTView extends JPanel implements View {
         /* -- APPLY THE ALGORITHM --  */
         
     	Fft fft = new Fft();
-    	fft.transform(res, res);
-    	double[] output = new double[data.length];
-    	//output =  res;
+    	fft.transform(res, res); // Awesome job ! Thanks Nayuki Minase ! (see Fft.java)
     	
-    	for (int i = 0; i < data.length; i++) {
-            output[i] = - res[i];
-            // take off the imaginary
-            if(output[i] > 0)
-            	output[i] = 0;
+    	double[] output = new double[data.length];
+    	output = res;
+    	
+    	/* - --------------- - - */
+    	/* -------scale y------- */
+    	/* - --------------- - - */
+    	double maxVal = -1000000000;// will be the rest of the biggest value of the array
+    	int cpt = -1; 
+    	int indexMax = 0; // will be the index of the biggest value of the array
+   	 	double ratio = 1;
+   	 	double diff = 0.0;
+	 	
+    	
+    	
+   	 	// run through the whole data array
+   	 	for(int j = 0 ; j < data.length ; j++) { // this doesn't do its job !!!
+    		// find who has the highest value
+   	 		System.out.println(""+ output[j]);
+   	 		cpt++;
+   	 		if( output[j]  > maxVal){
+    			maxVal = output[j];
+    			indexMax = cpt;
+    		}
+    		
         }
+   	 	
+   	 	ratio = (output[indexMax] - height)/output[indexMax];
+    	
+    	// if the highest value is lower than the panel
+	   	if(output[indexMax] < height ) {
+	   		// we'll lift it up !
+	   		System.out.println("the highest value is lower than the panel");
+	   		
+	   	// Apply the ratio so that everyone gets increased proportionally
+	    	for(int k = 0; k < data.length ; k++) {
+	    		output[k] *= ratio;
+	    	}	
+	   	}
+	   	else// if the highest value is higher than the panel
+	   	{
+	   		// we'll bring it down !
+	   		System.out.println("the highest value is higher than the panel");
+	   	 	
+	   		// calculate the ratio so that the highest reach the top
+	    	//ratio = (output[indexMax] - height )/ height; 
+	    	System.out.println("highest value "+output[indexMax]);
+	    	
+	    	// Apply the ratio so that everyone gets lowered proportionally
+	    	for(int k = 0; k < data.length ; k++) {
+	    		output[k] = output[k]* (1 - ratio);
+	    		//output[k] %= height;
+	    	}
+	    	/* - ---------------------- - - */
+	    	/* -------scale y : DONE------- */
+	    	/* - ---------------------- - - */	
+	   	}
+	   	
+	   	
     	
     	/* -- DISPLAY --  */
     	
@@ -88,26 +139,38 @@ public class FFTView extends JPanel implements View {
     	g2.clearRect( 0, 0, width, height);
     	g.setColor(Color.GREEN);
     	g.clearRect(0, 0, width, height);
+    	
+    	
     	// run through the buffer
     	for(int i = 0 ; i < output.length ; i++) {
-    		double prevPoint = (double) output[i];
+    		
+    		double currentPoint = (double) output[i];
     		// MEMENTO : Line2D.Double( x1, y1, x2, y2)
     		// Previous point = (x1,y1) & Current point = (x2,y2)
+    		
     		g2.draw( new Line2D.Double(
     				output.length - i ,
-    				currentPoint + height/2 ,
+    				prevPoint + height ,
     				output.length - (i+1),
-    				prevPoint + height/2
+    				currentPoint + height
     				));
-    		currentPoint = prevPoint;
+    		prevPoint = currentPoint;
     	};
-
-    	// adding the x axis
+    	
+    	// drawing the x axis
     	g.draw( new Line2D.Double(
     			0 ,
-				height/2,
+				height -1,
 				width,
-				height/2
+				height -1
+				));
+    	
+    	// drawing the y axis
+    	g.draw( new Line2D.Double(
+    			0 ,
+				0,
+				0,
+				height
 				));
     	repaint();
     }
@@ -160,10 +223,11 @@ public class FFTView extends JPanel implements View {
     // Used to draw the sound
     private BufferedImage bufferedImage;
     public Graphics2D g2;
-    // Used to draw the x axis
+    
+    // Used to draw the x and y axis
     public Graphics2D g;
     
     // Memorizing the y1 point (c.f drawData() )
-    private double currentPoint;
+    private double prevPoint;
     
 }
