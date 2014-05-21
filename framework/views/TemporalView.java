@@ -1,3 +1,5 @@
+package framework.views;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,6 +10,8 @@ import java.util.Observable;
 
 import javax.swing.*;
 
+import framework.Sound;
+
 
 /**
  *	TemporalView provides a View corresponding to the Observer Pattern (MVC ?!).
@@ -15,25 +19,25 @@ import javax.swing.*;
  *
  */
 public class TemporalView extends JPanel implements View {
-    
-	
+
+
 	/**
      * Implementation of view's method.
-     * 
-     * 
+     *
+     *
      * The update method is called when a change occurs in the model (theSound).
      * @param Observable o   			The sound model.
      * @param Object     dataChanged 	Is a boolean indicating if the model has been modified.
      * @Override
      */
     public void update(Observable o, Object dataChanged) {
-    	
+
 		// Retrieving the sound model
 		Sound s = (Sound) o;
 		// Retrieving the sound buffer
 		Double[] data = s.getData();
-		
-		
+
+
 		if( (boolean) dataChanged) {
 			this.drawData(data);
 		}
@@ -49,20 +53,20 @@ public class TemporalView extends JPanel implements View {
 
     	height = h;
     	width = w;
-    	
+
     }
-    
+
     /**
      * Main method of this class.
      * Draws the waveform.
      * @param	Double	buffer	the data array to be plotted
      */
     public void drawData(Double[] buffer) {
-    	
+
     	// Data display settings
     	g2.setColor(Color.WHITE);
     	g2.clearRect( 0, 0, width, height);
-    	
+
     	// run through the buffer
     	for(int i = 0 ; i < buffer.length ; i++) {
     		double prevPoint = (double) buffer[i];
@@ -74,62 +78,62 @@ public class TemporalView extends JPanel implements View {
     				buffer.length - (i+1),
     				prevPoint + height/2
     				));
-    		
+
     		System.out.println("Buffer = "+ buffer[i]);
     		currentPoint = prevPoint;
-    		
+
     	}
     	repaint();
     }
 
-    
+
     @Override
     protected void paintComponent(Graphics g) {
     	// calling mother's method
     	super.paintComponent(g);
-    	
+
 		if(bufferedImage == null){
     		init();
     	}
 		// ( Image, x, y, theOberserver )
     	g.drawImage(bufferedImage, 0, 0, this);
     }
-    
+
     /**
      * Defines the fundamentals aspects settings
      * Helper method
-     * 
-     * 
+     *
+     *
      */
     private void init(){
     	// size settings
     	width = getWidth();
     	height = getHeight();
-    	
+
     	// image settings :
     	// 8 bit
     	// Alpha Red Green Blue
     	bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB);
-    	
+
     	g2 = bufferedImage.createGraphics();
     	g2.setBackground(Color.black);
-    	
+
     	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
     }
-    
+
     // the waveform display
     //private SignalPanel signalPanel;
 
     // Panel visual settings
     private int height;
     private int width;
-    
+
     // Used to draw the sound
     private BufferedImage bufferedImage;
     public Graphics2D g2;
-    
+
     // Memorizing the y1 point (c.f drawData() )
     private double currentPoint;
-    
+
 }
