@@ -2,6 +2,7 @@ package framework;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 import framework.generators.Generator;
 import framework.editors.SoundEditor;
@@ -15,7 +16,7 @@ import framework.modifiers.Modifier;
  * The basic wave is synthetised using a generator object.
  * It is the core of the model in our MVC design pattern implementation.
  */
-public class Sound extends Observable {
+public class Sound extends Observable implements Observer {
     /**
      * Creates a Sound object.
      * @param  g the generator to be used
@@ -32,6 +33,12 @@ public class Sound extends Observable {
         modifiers = new ArrayList<Modifier>();
 
         generateSignal();
+    }
+
+    public void update(Observable o, Object arg) {
+        if(o instanceof Modifier) {
+            generateSignal();
+        }
     }
 
     /**
