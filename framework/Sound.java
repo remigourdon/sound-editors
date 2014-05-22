@@ -42,6 +42,8 @@ public class Sound extends Observable {
 
         data = signal;
 
+        applyModifiers(modifiers);
+
         setChanged();
         notifyObservers(true);  // Signal to observers that the data has changed
     }
@@ -70,6 +72,18 @@ public class Sound extends Observable {
      */
     public void addModfier(Modifier m) {
         modifiers.add(m);
+    }
+
+    /**
+     * Apply a list of modifiers to the Sound object.
+     * @param ms the list of modifiers to be applied
+     */
+    public void applyModifiers(ArrayList<Modifier> ms) {
+        Double[] newData = data;
+        for(Modifier m : ms) {
+            newData = m.apply(newData);
+        }
+        data = newData;
     }
 
     /**
