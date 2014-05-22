@@ -83,7 +83,7 @@ public class Sound extends Observable {
      * @param f the new frequency in hertz
      */
     public void setFrequency(Double f) {
-        if(f >= 0) {
+        if(f >= 0 && f != frequency) {
             frequency = f;
             generateSignal();
         } else {
@@ -105,7 +105,7 @@ public class Sound extends Observable {
      * @param d the new duration in seconds
      */
     public void setDuration(Double d) {
-        if(d >= 0) {
+        if(d >= 0 && d != duration) {
             duration = d;
             generateSignal();
         } else {
@@ -127,7 +127,7 @@ public class Sound extends Observable {
      * @param a the new amplitude
      */
     public void setAmplitude(Double a) {
-        if(a >= 0) {
+        if(a >= 0 && a != amplitude) {
             amplitude = a;
             generateSignal();
         } else {
