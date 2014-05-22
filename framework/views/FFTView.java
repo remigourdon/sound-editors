@@ -1,10 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
-import java.time.Duration;
 import java.util.Observable;
 
 import javax.swing.*;
@@ -34,7 +32,7 @@ public class FFTView extends JPanel implements View {
 		
 		
 		if( (boolean) dataChanged) {
-			this.drawData(data);
+			this.drawData(data, s.getFrequency());
 		}
     }
 
@@ -42,95 +40,46 @@ public class FFTView extends JPanel implements View {
      * Build a TemporalView.
      * @param int h	Height of the panel.
      * @param int w Width of the panel.
-     * @param Sound s The sound to be displayed.
      */
     public FFTView(int h, int w){
 
     	height = h;
     	width = w;
-    	
-    	
-    	
     }
     
     /**
      * Main method of this class.
      * 
      * Draws the corresponding FFT output of the given data signal.
-     * @param	Double	data	the data array of the signal
+     * @param	Double	data		the data array of the signal
+     * @param 	Double 	frequency	the frequency of the signal (Hz)
      */
-    public void drawData(Double[] data) {
+    public void drawData(Double[] data, Double frequency) {
 
+    	
     	/* -- Convert Double[] to double[] --  */
+    	// transform() only takes doubles
     	double[] res= new double[data.length];
     	for (int i = 0; i < data.length; i++) {
             res[i] = data[i].doubleValue();
         }
 		
     	
-        /* -- APPLY THE ALGORITHM --  */
-        
-    	Fft fft = new Fft();
-    	fft.transform(res, res); // Awesome job ! Thanks Nayuki Minase ! (see Fft.java)
     	
+        /* -- APPLY THE ALGORITHM --  */
+    	Fft fft = new Fft();
+    	fft.transform(res, res); // Awesome job ! Thanks to Nayuki Minase ! (see Fft.java)
     	double[] output = new double[data.length];
     	output = res;
+    	/* -- ------------------- --  */
     	
-    	/* - --------------- - - */
-    	/* -------scale y------- */
-    	/* - --------------- - - */
-    	double maxVal = -1000000000;// will be the rest of the biggest value of the array
-    	int cpt = -1; 
-    	int indexMax = 0; // will be the index of the biggest value of the array
-   	 	double ratio = 1;
-   	 	double diff = 0.0;
-	 	
-    	
-    	
-   	 	// run through the whole data array
-   	 	for(int j = 0 ; j < data.length ; j++) { // this doesn't do its job !!!
-    		// find who has the highest value
-   	 		System.out.println(""+ output[j]);
-   	 		cpt++;
-   	 		if( output[j]  > maxVal){
-    			maxVal = output[j];
-    			indexMax = cpt;
-    		}
-    		
+    	// i don't know why but transform returns some negatives, get rid of them here
+    	for (int i = 0; i < output.length; i++) {
+            if(output[i] < 0) output[i]= 0;
         }
-   	 	
-   	 	ratio = (output[indexMax] - height)/output[indexMax];
     	
-    	// if the highest value is lower than the panel
-	   	if(output[indexMax] < height ) {
-	   		// we'll lift it up !
-	   		System.out.println("the highest value is lower than the panel");
-	   		
-	   	// Apply the ratio so that everyone gets increased proportionally
-	    	for(int k = 0; k < data.length ; k++) {
-	    		output[k] *= ratio;
-	    	}	
-	   	}
-	   	else// if the highest value is higher than the panel
-	   	{
-	   		// we'll bring it down !
-	   		System.out.println("the highest value is higher than the panel");
-	   	 	
-	   		// calculate the ratio so that the highest reach the top
-	    	//ratio = (output[indexMax] - height )/ height; 
-	    	System.out.println("highest value "+output[indexMax]);
-	    	
-	    	// Apply the ratio so that everyone gets lowered proportionally
-	    	for(int k = 0; k < data.length ; k++) {
-	    		output[k] = output[k]* (1 - ratio);
-	    		//output[k] %= height;
-	    	}
-	    	/* - ---------------------- - - */
-	    	/* -------scale y : DONE------- */
-	    	/* - ---------------------- - - */	
-	   	}
-	   	
-	   	
+    	// scaling
+    	output = scale(output,  frequency.doubleValue() );
     	
     	/* -- DISPLAY --  */
     	
@@ -172,11 +121,73 @@ public class FFTView extends JPanel implements View {
 				0,
 				height
 				));
-    	repaint();
+    	
+    	repaint();// calls paintComponent()
     }
 
-    
-    @Override
+    /*
+     * Helper method that scales the results to the width,height of the frame.
+     * @param	double[] 	signal	The array to be scaled
+     * @param	double		freq	The frequency of the signal
+     * @return 	double[] 	output 	The scaled array
+     */
+    private double[] scale(double[] signal, double freq) {
+    	
+    	double[] output = signal;
+    	
+    	
+    	double maxVal = -1000000000;	// highest value of the array
+    	double minVal = 1000000000;		// lowest value of the array
+    	int indexMax = 0; // Index of the biggest value of the array
+   	 	int indexMin = 0; // Index of the lowest value of the array
+   	 
+   	 	// find who has the highest value
+   	 	for(int j = 0 ; j < output.length ; j++) {
+   	 		if( output[j]  > maxVal){
+    			maxVal = output[j];
+    			indexMax = j;
+    		}
+        }
+   	 	System.out.println("Bigest value :"+maxVal);
+   	 	System.out.println("Its Index :"+indexMax);
+   	 	
+   	 	// find who has the lowest value
+   	 	for(int j = 0 ; j < output.length ; j++) {
+   	 		if( output[j]  < minVal){
+    			minVal = output[j];
+    			indexMin = j;
+    		}
+        }
+   	 	System.out.println("Lowest value :"+minVal);
+   	 	System.out.println("Its index :"+indexMin);
+   	 	
+    	// setting the ratios
+    	double xRatio = output.length/width;
+    	double yRatio = output[indexMax]/height;
+    	
+    	// apply the x ratio
+    	double ref = 20;
+    	for (int i = indexMax ; indexMax != ref ; indexMax--) {
+    		output[i-1]= output[i];
+    		
+    	}
+    	
+    	System.out.println("Bigest value :"+output[indexMax]);//doit afficher ref comme index 
+   	 	System.out.println("Its Index :"+indexMax);
+   	 	
+    	// apply the Y ratio
+    	for(int k = 0; k < output.length ; k++) {
+    		output[k] /= yRatio;
+    	}
+    	
+    	System.out.println("xRatio = "+xRatio);
+    	System.out.println("yRatio = "+yRatio);
+    	System.out.println("maxVal = "+maxVal);
+    	System.out.println("must equals maxVal = "+output[(int) ref]);
+		return output;
+	}
+
+	@Override
     protected void paintComponent(Graphics g) {
     	// calling mother's method
     	super.paintComponent(g);
@@ -204,13 +215,14 @@ public class FFTView extends JPanel implements View {
     	// Alpha Red Green Blue
     	bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB);
     	
+    	// creates a Graphics2D to draw into the BufferedImage
     	g2 = bufferedImage.createGraphics();
     	g = bufferedImage.createGraphics();
+    	// now we can draw using g2 and g and the method draw()
     	
     	g2.setBackground(Color.black);
     	
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+
     }
     
     // the waveform display
