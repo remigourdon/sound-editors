@@ -17,11 +17,11 @@ public abstract class Parameter extends Observable {
     }
 
     /**
-     * Test the value to see if it fits the requirements.
-     * @param  text the text to be tested
-     * @return      True if valid, False otherwise
+     * Parse the value to see if it fits the requirements.
+     * @param  v the value to be tested
+     * @return   the value or null if it doesn't fit
      */
-    public abstract boolean isValid(Object v);
+    public abstract Object parseValue(Object v);
 
     /**
      * Attach a new ParameterEditor to the Parameter object.
@@ -48,8 +48,8 @@ public abstract class Parameter extends Observable {
     public void setValue(Object v) {
         // If the value is correct
         // Informs the modifier that the parameter changed
-        if(isValid(v)) {
-            value = v;
+        if(parseValue(v) != null) {
+            value = parseValue(v);
             setChanged();
             notifyObservers();
         }
