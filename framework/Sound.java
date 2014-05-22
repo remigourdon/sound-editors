@@ -6,6 +6,7 @@ import java.util.Observable;
 import framework.generators.Generator;
 import framework.editors.SoundEditor;
 import framework.views.View;
+import framework.modifiers.Modifier;
 
 /**
  * Represents a sound entity.
@@ -59,6 +60,14 @@ public class Sound extends Observable {
      */
     public void attachView(View v) {
         addObserver(v);
+    }
+
+    /**
+     * Add a new Modifier to the Sound object.
+     * @param m the Modifier to be added
+     */
+    public void addModfier(Modifier m) {
+        addObserver(m);
     }
 
     /**
