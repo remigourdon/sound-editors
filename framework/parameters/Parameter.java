@@ -17,6 +17,13 @@ public abstract class Parameter extends Observable {
     }
 
     /**
+     * Test the value to see if it fits the requirements.
+     * @param  text the text to be tested
+     * @return      True if valid, False otherwise
+     */
+    public abstract boolean isValid(Object v);
+
+    /**
      * Attach a new ParameterEditor to the Parameter object.
      * @return the ParameterEditor newly attached
      */
@@ -30,13 +37,23 @@ public abstract class Parameter extends Observable {
      * Get the current value of the Parameter object.
      * @return the value
      */
-    public abstract Object getValue();
+    public Object getValue() {
+        return value;
+    }
 
     /**
      * Set a new value in the Parameter object.
      * @param v the new value
      */
-    public abstract void setValue(Object v);
+    public void setValue(Object v) {
+        // If the value is correct
+        // Informs the modifier that the parameter changed
+        if(isValid(v)) {
+            value = v;
+            setChanged();
+            notifyObservers();
+        }
+    }
 
     /**
      * Get the name of the Parameter (clearer than toString() for this purpose).
