@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import framework.editors.Editor;
 import framework.Sound;
 import framework.Player;
-//import framework.views.TemporalView;
+import framework.views.TemporalView;
 
 /**
  * Basic implementation of the framework.
@@ -23,9 +23,9 @@ public class BasicEditor extends Editor {
 
         for(Sound s : player.getAllSounds()) {
             JPanel linePanel = new JPanel();
-            //TemporalView v = new TemporalView();
-            //s.attachView(v);
-            //linePanel.add(v);
+            TemporalView v = new TemporalView(200, 100);
+            s.attachView(v);
+            linePanel.add(v);
             linePanel.add(s.attachEditor());
             centralComponent.add(linePanel);
         }
