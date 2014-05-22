@@ -29,6 +29,8 @@ public class Sound extends Observable {
         duration    = d;
         amplitude   = a;
 
+        modifiers = new ArrayList<Modifier>();
+
         generateSignal();
     }
 
@@ -67,7 +69,7 @@ public class Sound extends Observable {
      * @param m the Modifier to be added
      */
     public void addModfier(Modifier m) {
-        addObserver(m);
+        modifiers.add(m);
     }
 
     /**
@@ -166,4 +168,5 @@ public class Sound extends Observable {
     private Double              duration;   // Seconds
     private Double              amplitude;
     private Double[]            data;
+    private ArrayList<Modifier> modifiers;
 }
