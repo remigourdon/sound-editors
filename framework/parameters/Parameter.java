@@ -2,10 +2,12 @@ package framework.parameters;
 
 import java.util.Observable;
 
+import framework.editors.ParameterEditor;
+
 /**
  * Abstract class to represent any kind of parameter.
  */
-public class Parameter extends Observable {
+public abstract class Parameter extends Observable {
     /**
      * Create a Parameter object.
      * @param  n the name of the parameter
@@ -28,18 +30,20 @@ public class Parameter extends Observable {
      * Get the current value of the Parameter object.
      * @return the value
      */
-    public Object getValue() {
-        return value;
-    }
+    public abstract Object getValue();
 
     /**
      * Set a new value in the Parameter object.
      * @param v the new value
      */
-    public void setValue(Object v) {
-        value = v;
-        setChanged();
-        notifyObservers(v);
+    public abstract void setValue(Object v);
+
+    /**
+     * Get the name of the Parameter (clearer than toString() for this purpose).
+     * @return the name of the Parameter
+     */
+    public String getName() {
+        return toString();
     }
 
     public String toString() {
