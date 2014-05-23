@@ -8,6 +8,7 @@ import framework.generators.Generator;
 import framework.editors.SoundEditor;
 import framework.views.View;
 import framework.modifiers.Modifier;
+import framework.parameters.DoubleParameter;
 
 /**
  * Represents a sound entity.
@@ -26,9 +27,11 @@ public class Sound extends Observable implements Observer {
      */
     public Sound(Generator g, Double f, Double d, Double a) {
         generator   = g;
-        frequency   = f;
-        duration    = d;
-        amplitude   = a;
+
+        // Creates parameters
+        frequency   = new DoubleParameter("Frequency", f, 0., 20000.);
+        duration    = new DoubleParameter("Duration", d, 0., 60.);
+        amplitude   = new DoubleParameter("Amplitude", a, 0., 100.);
 
         modifiers = new ArrayList<Modifier>();
 
@@ -45,7 +48,7 @@ public class Sound extends Observable implements Observer {
      * Generate the signal data from the basic wave.
      */
     public void generateSignal() {
-        Double[] signal = generator.generate(frequency, duration, amplitude);
+        Double[] signal = generator.generate(frequency.getValue(), duration.getValue(), amplitude.getValue());
 
         data = signal;
 
@@ -94,66 +97,26 @@ public class Sound extends Observable implements Observer {
     }
 
     /**
-     * Get the frequency of the Sound.
-     * @return the frequency in hertz
+     * Get the value of the specified DoubleParameter.
+     * @param  p the DoubleParameter
+     * @return   the current value
      */
-    public Double getFrequency() {
-        return frequency;
+    public Double getParameterValue(DoubleParameter p) {
+        return p.getValue();
     }
 
     /**
-     * Set the frequency of the Sound.
-     * @param f the new frequency in hertz
+     * Set the value of the specified DoubleParameter.
+     * @param p the DoubleParameter
+     * @param v the new value
      */
-    public void setFrequency(Double f) {
-        if(f >= 0 && f != frequency) {
-            frequency = f;
+    public void setParameterValue(DoubleParameter p, Double v) {
+        // If the value has been updated
+        if(p.setValue(v)) {
             generateSignal();
         } else {
-            setChanged();
-            notifyObservers(false);
-        }
-    }
-
-    /**
-     * Get the duration of the Sound.
-     * @return the duration in seconds
-     */
-    public Double getDuration() {
-        return duration;
-    }
-
-    /**
-     * Set the duration of the Sound.
-     * @param d the new duration in seconds
-     */
-    public void setDuration(Double d) {
-        if(d >= 0 && d != duration) {
-            duration = d;
-            generateSignal();
-        } else {
-            setChanged();
-            notifyObservers(false);
-        }
-    }
-
-    /**
-     * Get the amplitude of the Sound.
-     * @return the amplitude
-     */
-    public Double getAmplitude() {
-        return amplitude;
-    }
-
-    /**
-     * Set the amplitude of the Sound.
-     * @param a the new amplitude
-     */
-    public void setAmplitude(Double a) {
-        if(a >= 0 && a != amplitude) {
-            amplitude = a;
-            generateSignal();
-        } else {
+            // Notify observers but informs them that models didn't change
+            // This is convenient to reload good values in editors
             setChanged();
             notifyObservers(false);
         }
@@ -185,9 +148,9 @@ public class Sound extends Observable implements Observer {
     }
 
     private Generator           generator;
-    private Double              frequency;  // Hertzs
-    private Double              duration;   // Seconds
-    private Double              amplitude;
+    private DoubleParameter     frequency;  // Hertzs
+    private DoubleParameter     duration;   // Seconds
+    private DoubleParameter     amplitude;
     private Double[]            data;
     private ArrayList<Modifier> modifiers;
 }
