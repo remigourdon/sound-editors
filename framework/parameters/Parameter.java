@@ -5,9 +5,9 @@ import java.util.Observable;
 import framework.editors.ParameterEditor;
 
 /**
- * Abstract class to represent any kind of parameter.
+ * Generic abstract class to represent any kind of parameter.
  */
-public abstract class Parameter extends Observable {
+public abstract class Parameter<T> extends Observable {
     /**
      * Create a Parameter object.
      * @param  n the name of the parameter
@@ -21,7 +21,7 @@ public abstract class Parameter extends Observable {
      * @param  v the value to be tested
      * @return   the value or null if it doesn't fit
      */
-    public abstract Object parseValue(Object v);
+    public abstract T parseValue(T v);
 
     /**
      * Attach a new ParameterEditor to the Parameter object.
@@ -37,7 +37,7 @@ public abstract class Parameter extends Observable {
      * Get the current value of the Parameter object.
      * @return the value
      */
-    public Object getValue() {
+    public T getValue() {
         return value;
     }
 
@@ -45,7 +45,7 @@ public abstract class Parameter extends Observable {
      * Set a new value in the Parameter object.
      * @param v the new value
      */
-    public void setValue(Object v) {
+    public void setValue(T v) {
         // If the value is correct
         // Informs the modifier that the parameter changed
         if(parseValue(v) != null) {
@@ -68,5 +68,5 @@ public abstract class Parameter extends Observable {
     }
 
     private String  name;
-    private Object  value;
+    private T       value;
 }
