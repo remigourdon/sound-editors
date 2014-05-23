@@ -2,10 +2,12 @@ package framework;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 import framework.generators.Generator;
 import framework.editors.SoundEditor;
 import framework.views.View;
+import framework.modifiers.Modifier;
 
 /**
  * Represents a sound entity.
@@ -14,7 +16,7 @@ import framework.views.View;
  * The basic wave is synthetised using a generator object.
  * It is the core of the model in our MVC design pattern implementation.
  */
-public class Sound extends Observable {
+public class Sound extends Observable implements Observer {
     /**
      * Creates a Sound object.
      * @param  g the generator to be used
@@ -28,7 +30,15 @@ public class Sound extends Observable {
         duration    = d;
         amplitude   = a;
 
+        modifiers = new ArrayList<Modifier>();
+
         generateSignal();
+    }
+
+    public void update(Observable o, Object arg) {
+        if(o instanceof Modifier) {
+            generateSignal();
+        }
     }
 
     /**
@@ -38,6 +48,8 @@ public class Sound extends Observable {
         Double[] signal = generator.generate(frequency, duration, amplitude);
 
         data = signal;
+
+        applyModifiers(modifiers);
 
         setChanged();
         notifyObservers(true);  // Signal to observers that the data has changed
@@ -62,6 +74,26 @@ public class Sound extends Observable {
     }
 
     /**
+     * Add a new Modifier to the Sound object.
+     * @param m the Modifier to be added
+     */
+    public void addModfier(Modifier m) {
+        modifiers.add(m);
+    }
+
+    /**
+     * Apply a list of modifiers to the Sound object.
+     * @param ms the list of modifiers to be applied
+     */
+    public void applyModifiers(ArrayList<Modifier> ms) {
+        Double[] newData = data;
+        for(Modifier m : ms) {
+            newData = m.apply(newData);
+        }
+        data = newData;
+    }
+
+    /**
      * Get the frequency of the Sound.
      * @return the frequency in hertz
      */
@@ -74,7 +106,7 @@ public class Sound extends Observable {
      * @param f the new frequency in hertz
      */
     public void setFrequency(Double f) {
-        if(f >= 0) {
+        if(f >= 0 && f != frequency) {
             frequency = f;
             generateSignal();
         } else {
@@ -96,7 +128,7 @@ public class Sound extends Observable {
      * @param d the new duration in seconds
      */
     public void setDuration(Double d) {
-        if(d >= 0) {
+        if(d >= 0 && d != duration) {
             duration = d;
             generateSignal();
         } else {
@@ -118,7 +150,7 @@ public class Sound extends Observable {
      * @param a the new amplitude
      */
     public void setAmplitude(Double a) {
-        if(a >= 0) {
+        if(a >= 0 && a != amplitude) {
             amplitude = a;
             generateSignal();
         } else {
@@ -157,4 +189,5 @@ public class Sound extends Observable {
     private Double              duration;   // Seconds
     private Double              amplitude;
     private Double[]            data;
+    private ArrayList<Modifier> modifiers;
 }
