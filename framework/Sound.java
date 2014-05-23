@@ -8,6 +8,7 @@ import framework.generators.Generator;
 import framework.editors.SoundEditor;
 import framework.views.View;
 import framework.modifiers.Modifier;
+import framework.parameters.Parameter;
 import framework.parameters.DoubleParameter;
 
 /**
@@ -120,6 +121,14 @@ public class Sound extends Observable implements Observer {
             setChanged();
             notifyObservers(false);
         }
+    }
+
+    /**
+     * Returns an array containing all the Parameter objects of the Sound.
+     * @return the Parameter array
+     */
+    public Parameter[] getParameters() {
+        return new Parameter[]{frequency, duration, amplitude};
     }
 
     /**
