@@ -30,9 +30,9 @@ public class Sound extends Observable implements Observer {
         generator   = g;
 
         // Creates parameters
-        frequency   = new DoubleParameter("Frequency", f, 0., 20000.);
-        duration    = new DoubleParameter("Duration", d, 0., 60.);
-        amplitude   = new DoubleParameter("Amplitude", a, 0., 100.);
+        frequency   = new DoubleParameter(this, "Frequency", f, 0., 20000.);
+        duration    = new DoubleParameter(this, "Duration", d, 0., 60.);
+        amplitude   = new DoubleParameter(this, "Amplitude", a, 0., 100.);
 
         modifiers = new ArrayList<Modifier>();
 
