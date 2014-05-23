@@ -41,6 +41,14 @@ public class ParameterEditor extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Get the associated Parameter.
+     * @return the associated Parameter
+     */
+    public Parameter getParameter() {
+        return parameter;
+    }
+
     private Parameter   parameter;
     private JTextField  field;
 }
