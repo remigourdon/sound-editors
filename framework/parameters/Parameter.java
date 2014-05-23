@@ -12,8 +12,9 @@ public abstract class Parameter<T> extends Observable {
      * Create a Parameter object.
      * @param  n the name of the parameter
      */
-    public Parameter(String n) {
-        name = n;
+    public Parameter(String n, T v) {
+        name    = n;
+        value   = v;
     }
 
     /**
