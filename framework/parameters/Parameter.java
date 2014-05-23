@@ -11,6 +11,7 @@ public abstract class Parameter<T> extends Observable {
     /**
      * Create a Parameter object.
      * @param  n the name of the parameter
+     * @param  v the initial value of the parameter
      */
     public Parameter(String n, T v) {
         name    = n;
@@ -23,6 +24,13 @@ public abstract class Parameter<T> extends Observable {
      * @return   the value or null if it doesn't fit
      */
     public abstract T parseValue(T v);
+
+    /**
+     * Parse the value from a String and see if it fits the requirements.
+     * @param  s the String to parse
+     * @return   the value or null if it doesn't fit
+     */
+    public abstract T parseValue(String s);
 
     /**
      * Attach a new ParameterEditor to the Parameter object.
