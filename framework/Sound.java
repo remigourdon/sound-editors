@@ -64,9 +64,7 @@ public class Sound extends Observable implements Observer {
      * @return the SoundEditor newly attached
      */
     public SoundEditor attachEditor() {
-        SoundEditor editor = new SoundEditor(this);
-        addObserver(editor);
-        return editor;
+        return new SoundEditor(this);
     }
 
     /**
@@ -98,29 +96,16 @@ public class Sound extends Observable implements Observer {
     }
 
     /**
-     * Get the value of the specified DoubleParameter.
-     * @param  p the DoubleParameter
-     * @return   the current value
+     * Get a Parameter object according to its name.
+     * @param  s the required name
+     * @return   the Parameter if it has been found, null otherwise
      */
-    public Double getParameterValue(DoubleParameter p) {
-        return p.getValue();
-    }
-
-    /**
-     * Set the value of the specified DoubleParameter.
-     * @param p the DoubleParameter
-     * @param v the new value
-     */
-    public void setParameterValue(DoubleParameter p, Double v) {
-        // If the value has been updated
-        if(p.setValue(v)) {
-            generateSignal();
-        } else {
-            // Notify observers but informs them that models didn't change
-            // This is convenient to reload good values in editors
-            setChanged();
-            notifyObservers(false);
+    public Parameter getParameterByName(String s) {
+        for(Parameter p : getParameters()) {
+            if(p.getName() == s)
+                return p;
         }
+        return null;
     }
 
     /**
