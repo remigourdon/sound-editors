@@ -51,7 +51,7 @@ public class FFTView extends JPanel implements View {
     
     /**
      * Main method of this class.
-     * 
+	 * 
      * Draws the corresponding FFT output of the given data signal.
      * @param	Double	data		the data array of the signal
      * @param 	Double 	frequency	the frequency of the signal (Hz)
