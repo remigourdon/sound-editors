@@ -1,5 +1,7 @@
 package framework.parameters;
 
+import java.util.Observer;
+
 import framework.parameters.Parameter;
 
 /**
@@ -8,13 +10,14 @@ import framework.parameters.Parameter;
 public class DoubleParameter extends Parameter<Double> {
     /**
      * Create a DoubleParameter object.
+     * @param  o   the observer of the Parameter
      * @param  n   the name of the parameter
      * @param  v   the initial value of the parameter
      * @param  min the minimal value of the parameter
      * @param  max the maximal value of the parameter
      */
-    public DoubleParameter(String n, Double v, Double min, Double max) {
-        super(n, v);
+    public DoubleParameter(Observer o, String n, Double v, Double min, Double max) {
+        super(o, n, v);
         minValue = min;
         maxValue = max;
     }

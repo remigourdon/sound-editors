@@ -1,6 +1,7 @@
 package framework.parameters;
 
 import java.util.Observable;
+import java.util.Observer;
 
 import framework.editors.ParameterEditor;
 
@@ -10,10 +11,12 @@ import framework.editors.ParameterEditor;
 public abstract class Parameter<T> extends Observable {
     /**
      * Create a Parameter object.
-     * @param  n the name of the parameter
-     * @param  v the initial value of the parameter
+     * @param  o the observer of the Parameter
+     * @param  n the name of the Parameter
+     * @param  v the initial value of the Parameter
      */
-    public Parameter(String n, T v) {
+    public Parameter(Observer o, String n, T v) {
+        addObserver(o);
         name    = n;
         value   = v;
     }
