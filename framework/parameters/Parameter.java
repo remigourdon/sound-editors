@@ -52,7 +52,7 @@ public abstract class Parameter<T> extends Observable {
 
     /**
      * Set a new value in the Parameter object.
-     * @param  v the new value
+     * @param  v the value possibly valid
      * @return   true if the value has been updated, false otherwise
      */
     public boolean setValue(T v) {
@@ -60,6 +60,21 @@ public abstract class Parameter<T> extends Observable {
         // Informs the modifier that the parameter changed
         if(parseValue(v) != null) {
             value = parseValue(v);
+            setChanged();
+            notifyObservers();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Set a new value in the Parameter object.
+     * @param  s the string possibly containing a new value
+     * @return   true if the value has been updated, false otherwise
+     */
+    public boolean setValue(String s) {
+        if(parseValue(s) != null) {
+            value = parseValue(s);
             setChanged();
             notifyObservers();
             return true;
