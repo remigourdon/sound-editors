@@ -52,16 +52,19 @@ public abstract class Parameter<T> extends Observable {
 
     /**
      * Set a new value in the Parameter object.
-     * @param v the new value
+     * @param  v the new value
+     * @return   true if the value has been updated, false otherwise
      */
-    public void setValue(T v) {
+    public boolean setValue(T v) {
         // If the value is correct
         // Informs the modifier that the parameter changed
         if(parseValue(v) != null) {
             value = parseValue(v);
             setChanged();
             notifyObservers();
+            return true;
         }
+        return false;
     }
 
     /**
