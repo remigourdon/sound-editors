@@ -27,7 +27,7 @@ public class DoubleParameter extends Parameter<Double> {
 
     public Double parseValue(String s) {
         try {
-            return Double.parseDouble(s);
+            return parseValue(Double.parseDouble(s));
         } catch(NullPointerException|NumberFormatException e) {
             return null;
         }
