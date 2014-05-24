@@ -17,6 +17,7 @@ public class Noise extends Modifier {
      */
     public Noise(Sound s) {
         super(s);
+        sound = s;
         amplitude = new DoubleParameter(this, "Amplitude", 0.5, 0., 100.);
     }
 
