@@ -81,6 +81,7 @@ public class Sound extends Observable implements Observer {
      */
     public void addModifier(Modifier m) {
         modifiers.add(m);
+        generateSignal();
     }
 
     /**
@@ -90,7 +91,6 @@ public class Sound extends Observable implements Observer {
     public void applyModifiers(ArrayList<Modifier> ms) {
         Double[] newData = data;
         for(Modifier m : ms) {
-            System.out.println(m.toString()); // DEBUG
             newData = m.apply(newData);
         }
         data = newData;
