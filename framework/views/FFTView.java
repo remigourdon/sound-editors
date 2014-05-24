@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -5,10 +6,10 @@ import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
+import javax.swing.JPanel;
 
-import framework.sound
+import framework.Sound
 
-import javax.swing.*;
 
 /**
  *	TemporalView provides a View corresponding to the Observer Pattern.
@@ -16,7 +17,6 @@ import javax.swing.*;
  *
  */
 public class FFTView extends JPanel implements View {
-    
 
 	/**
      * Implementation of view's method.
@@ -33,7 +33,6 @@ public class FFTView extends JPanel implements View {
 		// Retrieving the sound buffer
 		Double[] data = s.getData();
 		
-		
 		if( (boolean) dataChanged) {
 			this.drawData(data);
 		}
@@ -49,71 +48,7 @@ public class FFTView extends JPanel implements View {
     	width = w;  	
     }
 
-
-     /*
-      * Helper method that scales the results to the width,height of the frame.
-      * @param	double[] 	signal	The array to be scaled
-      * @return 	double[] 	output 	The scaled array
-      */
-     private double[] scale(double[] signal) {
-     	
-     	// The index corresponds to the frequency
-     	
-     	double[] output = new double[signal.length];
-     	output = signal.clone();
-     	
-     	
-     	double maxVal = -1000000000;	// highest value of the array
-     	double minVal = 1000000000;		// lowest value of the array
-     	int indexMax = 0; // Index of the biggest value of the array
-	 	int indexMin = 0; // Index of the lowest value of the array
-	 
-	 	// find the index of the highest value
-	 	for(int j = 0 ; j < output.length ; j++) {
-	 		System.out.println(""+output[j]);
-	 		if( output[j]  > maxVal){
-	 			maxVal = output[j];
-	 			indexMax = j;
-	 		}
-	 	}
-	 	
-	 	System.out.println("Maximum value :" +maxVal);
-	 	System.out.println("indexMax :" +indexMax);
- 	
-	 	// setting the ratios
-	 	//double yRatio = output[indexMax]/height;
-	 	double yRatio = output[indexMax] / height;
-	 			
-     	// where the first harmonic should be moved
-     	double ref = width /10;
-     	
-     	/* if the index (frequency) of the first harmonic is superior to the reference (x scaling) */
-     	
-     	if(indexMax > ref ) {
-     		// Move each element to the left
- 	    	for( int i = indexMax; indexMax > ref ; indexMax--) {
-     			double tmp = output[indexMax];
- 	    		output[indexMax] = output[indexMax+1];
- 	    		output[indexMax-1]= tmp;
- 	    	}
- 	    	System.out.println("X Scaling : DONE");
- 	    }
-     	System.out.println("indexMax after X scaling :"+indexMax);
-     	
-     	
-	 	// if the highest point is higher than the height of the panel (y scaling)
-	 	if(maxVal > height) {
-	 		// apply the Y ratio
-	    	for(int k = 0; k < output.length ; k++) {
-	    		output[k] /= (yRatio);
-	    		System.out.println(""+output[k]);
-	    	}
-	    	System.out.println("Y Scaling : DONE");
-	 	}
-	 	System.out.println("maxValue after Y scaling :"+output[indexMax]);
-	 	System.out.println("and is at index :"+indexMax+ "(should be ="+ref+" ) sinon le X scaling ne fonctionne pas");
- 		return output;
- 	}     
+     
      
     /**
      * Main method of this class.
@@ -138,60 +73,40 @@ public class FFTView extends JPanel implements View {
     	fft.transform(res, res); // Awesome job ! Thanks to Nayuki Minase ! (see Fft.java)
     	
     	// -- ------------------- --  
-
-    	
-    	// scaling
-    	output = scale(output);
     	
     	// get rid of the imaginary part
     	for (int i = 0; i < output.length; i++) {
-            if(output[i] > 0)
+            if(output[i] < 0)
             	output[i] = 0;
         }
-    	/*
-    	for(int i = 0 ; i < output.length ; i++) {
-    		output[i] *= (-1); 
-    	}
-    	*/
     	
     	
     	
-    	/* -- DISPLAY --  */
-    	
-    	// Data display settings
+    	// -- Data display settings --
 
     	g2.setColor(Color.WHITE);
     	g2.clearRect( 0, 0, width, height);
-    	g.setColor(Color.GREEN);
+    	g.setColor(Color.RED);
     	g.clearRect( 0, 0, width, height);
     	
-    	// run through the buffer
-    	for(int i = 0 ; i < output.length ; i++) {
-    		double currentPoint = (double) output[i];
-    		// MEMENTO : Line2D.Double( x1, y1, x2, y2)
-    		// Previous point = (x1,y1) & Current point = (x2,y2)
-    		g2.draw( new Line2D.Double(
-    				output.length - i ,
-    				prevPoint + height/2 ,
-    				output.length - (i+1),
-    				currentPoint + height/2
-    				));
-    		
-    		prevPoint = currentPoint;
-    		
+    	
+    	// set the origin on the down-left corner 
+    	g2.translate(0, height - 1);
+    	
+    	// set the line's width
+    	g2.setStroke(new BasicStroke(80));
+    	
+    	// Pick the scale in function of the size of the panel
+    	if(height <= 200 && width <= 400){
+    		// Scale format : (125;300) (h;w)
+        	g2.scale(0.005, -0.0002);
+        	
     	}
-    	// adding the x axis
-    	g.draw( new Line2D.Double(
-    			0 ,
-				height/2,
-				width,
-				height/2
-				));
-    	repaint();
+    	else{
+    		// Scale format : (250;600) (h;w)
+        	g2.scale(0.06, -0.0002);
+    	}
     	
-    	
-    	
-    	/*
     	// plot the whole buffer
     	for(int i = 0 ; i < output.length ; i++) {
     		
@@ -209,14 +124,6 @@ public class FFTView extends JPanel implements View {
     		prevPoint = currentPoint;
     	};
     	
-    	// drawing the x axis
-    	g.draw( new Line2D.Double(
-    			0 ,
-				height -1,
-				width,
-				height -1
-				));
-    	
     	// drawing the y axis
     	g.draw( new Line2D.Double(
     			0 ,
@@ -225,9 +132,16 @@ public class FFTView extends JPanel implements View {
 				height
 				));
     	
+    	// adding the x axis
+    	g.draw( new Line2D.Double(
+    			0 ,
+				height -1,
+				width,
+				height -1
+				));
+    	
     	repaint();// calls paintComponent()
     	
-    	*/
     }
 
 	@Override
@@ -235,14 +149,14 @@ public class FFTView extends JPanel implements View {
     	// calling mother's method
     	super.paintComponent(g);
     	
-		if(bufferedImage == null){
+    	if(bufferedImage == null){
     		init();
     	}
 		// ( Image, x, y, theOberserver )
     	g.drawImage(bufferedImage, 0, 0, this);
-    	
     }
-    
+	
+	
     /**
      * Defines the fundamentals aspects settings
      * Helper method
@@ -276,13 +190,15 @@ public class FFTView extends JPanel implements View {
     // Panel visual settings
     private int height;
     private int width;
+	
+    // Used to draw anything
+    private BufferedImage bufferedImage;
     
     // Used to draw the sound
-    private BufferedImage bufferedImage;
-    public Graphics2D g2;
+    private Graphics2D g2;
     
     // Used to draw the x and y axis
-    public Graphics2D g;
+    private Graphics2D g;
     
     // Memorizing the y1 point (c.f drawData() )
     private double prevPoint;
