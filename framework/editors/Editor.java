@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import java.util.Observable;
 import java.util.Observer;
@@ -37,7 +38,7 @@ public abstract class Editor extends JFrame implements Observer {
 
         // Top panel
         JPanel topPanel     = new JPanel();
-        JButton playAllButton  = new JButton("Play all");
+        JButton playAllButton  = new JButton(new ImageIcon("framework/editors/icons/play.png"));
         playAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 player.playAll();
