@@ -54,35 +54,39 @@ public abstract class Parameter<T> extends Observable {
     }
 
     /**
-     * Set a new value in the Parameter object.
+     * Set a new value in the Parameter object and notify observers.
+     *
+     * If the value has been updated, true is sent, false otherwise.
+     *
      * @param  v the value possibly valid
-     * @return   true if the value has been updated, false otherwise
      */
-    public boolean setValue(T v) {
+    public void setValue(T v) {
         // If the value is correct
         // Informs the modifier that the parameter changed
         if(parseValue(v) != null) {
             value = parseValue(v);
             setChanged();
-            notifyObservers();
-            return true;
+            notifyObservers(true);
         }
-        return false;
+        setChanged();
+        notifyObservers(false);
     }
 
     /**
-     * Set a new value in the Parameter object.
+     * Set a new value in the Parameter object and notify observers.
+     *
+     * If the value has been updated, true is sent, false otherwise.
+     *
      * @param  s the string possibly containing a new value
-     * @return   true if the value has been updated, false otherwise
      */
-    public boolean setValue(String s) {
+    public void setValue(String s) {
         if(parseValue(s) != null) {
             value = parseValue(s);
             setChanged();
-            notifyObservers();
-            return true;
+            notifyObservers(true);
         }
-        return false;
+        setChanged();
+        notifyObservers(false);
     }
 
     /**
