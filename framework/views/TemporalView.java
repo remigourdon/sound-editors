@@ -12,7 +12,7 @@ import java.util.Observable;
 import javax.swing.JPanel;
 
 import framework.Sound;
-import framework.view.View;
+import framework.views.View;
 
 
 /**
@@ -76,8 +76,8 @@ public class TemporalView extends JPanel implements View {
     	g.clearRect( 0, 0, width, height);
 		// set the line's width
     	g2.setStroke(new BasicStroke(100));
-    	
-		
+
+
     	// run through the buffer
     	for(int i = 0 ; i < buffer.length ; i++) {
     		double prevPoint = (double) buffer[i];
