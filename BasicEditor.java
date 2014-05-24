@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import framework.editors.Editor;
 import framework.Sound;
 import framework.Player;
-//import framework.views.TemporalView;
+import framework.views.TemporalView;
 
 /**
  * Basic implementation of the framework.
@@ -35,9 +35,9 @@ public class BasicEditor extends Editor {
             JLabel label = new JLabel("Sound " + i);
             linePanel.add(label);
 
-            //TemporalView v = new TemporalView(200, 100);
-            //s.attachView(v);
-            //linePanel.add(v);
+            TemporalView v = new TemporalView(200, 100);
+            s.attachView(v);
+            linePanel.add(v);
 
             JButton paramButton = new JButton(new ImageIcon("framework/editors/icons/settings.png"));
             paramButton.addActionListener(new ActionListener() {
