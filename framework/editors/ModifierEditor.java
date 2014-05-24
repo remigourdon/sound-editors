@@ -15,10 +15,8 @@ import framework.parameters.Parameter;
 public class ModifierEditor extends JPanel {
     public ModifierEditor(Modifier m) {
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         for(Parameter p : m.getParameters()) {
-            add(new JLabel(m.getName()));
+            add(new JLabel(m.getName() + ": "));
             add(p.attachEditor());
         }
     }
