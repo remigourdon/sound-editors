@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import framework.Sound;
 import framework.parameters.Parameter;
+import framework.editors.ModifierEditor;
 
 /**
  * Abstract class to represent all kind of filters and effects.
@@ -25,6 +26,14 @@ public abstract class Modifier extends Observable implements Observer {
             setChanged();
             notifyObservers();
         }
+    }
+
+    /**
+     * Attach a new ModifierEditor to the Modifier object.
+     * @return the ModifierEditor newly attached
+     */
+    public ModifierEditor attachEditor() {
+        return new ModifierEditor(this);
     }
 
     /**
