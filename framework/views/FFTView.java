@@ -19,6 +19,19 @@ import framework.views.View;
  */
 public class FFTView extends JPanel implements View {
 
+
+    /**
+     * Build a FFT view.
+     * @param int h	Height of the panel.
+     * @param int w Width of the panel.
+     */
+     public FFTView(int h, int w){
+    	height = h;
+    	width = w;
+		getParent().add(this);
+    }
+
+
 	/**
      * Implementation of view's method.
      *
@@ -37,17 +50,6 @@ public class FFTView extends JPanel implements View {
 		if( (boolean) dataChanged) {
 			this.drawData(data);
 		}
-    }
-
-    /**
-     * Build a FFT view.
-     * @param int h	Height of the panel.
-     * @param int w Width of the panel.
-     */
-     public FFTView(int h, int w){
-    	height = h;
-    	width = w;
-		add(this);
     }
 
 
