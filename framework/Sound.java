@@ -73,6 +73,7 @@ public class Sound extends Observable implements Observer {
      */
     public void attachView(View v) {
         addObserver(v);
+        generateSignal();
     }
 
     /**
