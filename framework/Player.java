@@ -77,7 +77,7 @@ public class Player extends Observable {
 
         line.start();
 
-        for(int i = 0; i < (Double) s.getParameterByName("Duration").getValue() * Generator.SAMPLE_RATE; i++) {
+        for(int i = 0; i < ((Double) s.getParameterByName("Duration").getValue()).intValue() * Generator.SAMPLE_RATE; i++) {
             // Clip
             if (data[i] < -1.0) data[i] = -1.0;
             if (data[i] > +1.0) data[i] = +1.0;
@@ -118,7 +118,7 @@ public class Player extends Observable {
         for(int i = 0; i < (int) (maxDuration * Generator.SAMPLE_RATE); i++) {
             short sh = 0;
             for(Sound s : selection) {
-                if(i < (int) ((Double) s.getParameterByName("Duration").getValue() * Generator.SAMPLE_RATE)) {
+                if(i < (((Double) s.getParameterByName("Duration").getValue()).intValue() * Generator.SAMPLE_RATE)) {
                     Double[] data = s.getData();
 
                     // Clip
