@@ -21,7 +21,7 @@ public abstract class Modifier extends Observable implements Observer {
     public void update(Observable o, Object arg) {
         // If a parameter has been modified
         // Inform the Sound object that the Modifier changed
-        if(o instanceof Parameter) {
+        if(o instanceof Parameter && arg == true) {
             setChanged();
             notifyObservers();
         }
