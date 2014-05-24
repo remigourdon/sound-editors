@@ -28,7 +28,7 @@ public class FFTView extends JPanel implements View {
      public FFTView(int h, int w){
     	height = h;
     	width = w;
-		getParent().add(this);
+	
     }
 
 
@@ -156,6 +156,12 @@ public class FFTView extends JPanel implements View {
     	}
 		// ( Image, x, y, theOberserver )
     	g.drawImage(bufferedImage, 0, 0, this);
+
+	JLabel ImgLabel = new JLabel(new ImageIcon(bufferedImage));
+    	add(ImgLabel);
+    	getParent().add(this);
+
+
     }
 
 
