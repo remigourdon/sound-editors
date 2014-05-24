@@ -42,7 +42,7 @@ public class Sound extends Observable implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        if(o instanceof Modifier || (o instanceof Parameter && arg == true)) {
+        if(o instanceof Modifier || (o instanceof Parameter && (boolean) arg == true)) {
             generateSignal();
         }
     }
