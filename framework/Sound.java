@@ -34,6 +34,8 @@ public class Sound extends Observable implements Observer {
         duration    = new DoubleParameter(this, "Duration", d, 0., 60.);
         amplitude   = new DoubleParameter(this, "Amplitude", a, 0., 100.);
 
+        data = new Double[Generator.SAMPLE_RATE * duration.getValue().intValue()];
+
         modifiers = new ArrayList<Modifier>();
 
         generateSignal();
@@ -72,8 +74,8 @@ public class Sound extends Observable implements Observer {
      * @param v the View to be attached
      */
     public void attachView(View v) {
-        addObserver(v);
         generateSignal();
+        addObserver(v);
     }
 
     /**
