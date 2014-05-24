@@ -1,5 +1,6 @@
 package framework.views;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,6 +12,7 @@ import java.util.Observable;
 import javax.swing.JPanel;
 
 import framework.Sound;
+import framework.view.View;
 
 
 /**
@@ -30,7 +32,7 @@ public class TemporalView extends JPanel implements View {
     public TemporalView(int h, int w){
     	height = h;
     	width = w;
-		add(this);
+    	getParent().add(this);
     }
 
 	/**
