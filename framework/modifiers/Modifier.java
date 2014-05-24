@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import framework.Sound;
 import framework.parameters.Parameter;
+import framework.editors.ModifierEditor;
 
 /**
  * Abstract class to represent all kind of filters and effects.
@@ -21,10 +22,18 @@ public abstract class Modifier extends Observable implements Observer {
     public void update(Observable o, Object arg) {
         // If a parameter has been modified
         // Inform the Sound object that the Modifier changed
-        if(o instanceof Parameter) {
+        if(o instanceof Parameter && arg == true) {
             setChanged();
             notifyObservers();
         }
+    }
+
+    /**
+     * Attach a new ModifierEditor to the Modifier object.
+     * @return the ModifierEditor newly attached
+     */
+    public ModifierEditor attachEditor() {
+        return new ModifierEditor(this);
     }
 
     /**

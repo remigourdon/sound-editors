@@ -37,8 +37,16 @@ public class ParameterEditor extends JPanel implements Observer {
 
     public void update(Observable o, Object arg) {
         if(o == parameter) {
-            parameter.getValue().toString();
+            field.setText(parameter.getValue().toString());
         }
+    }
+
+    /**
+     * Get the associated Parameter.
+     * @return the associated Parameter
+     */
+    public Parameter getParameter() {
+        return parameter;
     }
 
     private Parameter   parameter;

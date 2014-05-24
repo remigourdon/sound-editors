@@ -16,3 +16,6 @@ TestEditor.java
 
 # emacs backup file
 *.java~
+
+# bash scripts
+*.sh

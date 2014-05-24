@@ -1,41 +1,41 @@
 package framework.parameters;
 
+import java.util.Observer;
+
 import framework.parameters.Parameter;
 
 /**
- * Class representing any double Parameter.
+ * Class that represents a Parameter of Double type.
  */
-public class DoubleParameter extends Parameter {
+public class DoubleParameter extends Parameter<Double> {
     /**
-     * Create an DoubleParameter object.
+     * Create a DoubleParameter object.
+     * @param  o   the observer of the Parameter
      * @param  n   the name of the parameter
-     * @param  max the maximum value to accept
-     * @param  min the minimum value to accept
+     * @param  v   the initial value of the parameter
+     * @param  min the minimal value of the parameter
+     * @param  max the maximal value of the parameter
      */
-    public DoubleParameter(String n, Double max, Double min) {
-        super(n);
-        name = n;
-        maxValue = max;
+    public DoubleParameter(Observer o, String n, Double v, Double min, Double max) {
+        super(o, n, v);
         minValue = min;
+        maxValue = max;
     }
 
-    public Object parseValue(Object v) {
-        // If the value is a text
-        // Try to parse a Double from it
-        if(v instanceof String) {
-            try {
-                return Double.parseDouble(v.toString());
-            } catch (NumberFormatException e) {
-                return null;
-            }
-        }
-        if(v instanceof Double) {
+    public Double parseValue(Double v) {
+        if(v <= maxValue && v >= minValue)
             return v;
-        }
         return null;
     }
 
-    private String      name;
-    private Double      maxValue;
-    private Double      minValue;
+    public Double parseValue(String s) {
+        try {
+            return parseValue(Double.parseDouble(s));
+        } catch(NullPointerException|NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private Double maxValue;
+    private Double minValue;
 }
