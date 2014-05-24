@@ -85,6 +85,13 @@ public class Sound extends Observable implements Observer {
     }
 
     /**
+     * Get all the modifiers of the Sound object.
+     */
+    public Modifier[] getModifiers() {
+        return modifiers.toArray(new Modifier[0]);
+    }
+
+    /**
      * Apply a list of modifiers to the Sound object.
      * @param ms the list of modifiers to be applied
      */
