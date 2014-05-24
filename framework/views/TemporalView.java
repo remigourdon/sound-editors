@@ -21,6 +21,18 @@ import framework.Sound;
 public class TemporalView extends JPanel implements View {
 
 
+    /**
+     * Build a TemporalView.
+     * @param int h	Height of the panel.
+     * @param int w Width of the panel.
+     * @param Sound s The sound to be displayed.
+     */
+    public TemporalView(int h, int w){
+    	height = h;
+    	width = w;
+		add(this);
+    }
+
 	/**
      * Implementation of view's method.
      *
@@ -44,18 +56,6 @@ public class TemporalView extends JPanel implements View {
     }
 
     /**
-     * Build a TemporalView.
-     * @param int h	Height of the panel.
-     * @param int w Width of the panel.
-     * @param Sound s The sound to be displayed.
-     */
-    public TemporalView(int h, int w){
-    	height = h;
-    	width = w;
-    	bufferedImage = null;
-    }
-
-    /**
      * Main method of this class.
      * Draws the waveform.
      * @param	Double	buffer	the data array to be plotted
@@ -63,19 +63,19 @@ public class TemporalView extends JPanel implements View {
     public void drawData(Double[] buffer) {
 
     	// convert Double[] to double[]
-    	double[] res = new double[buffer.length];
+    	double[] output = new double[buffer.length];
     	for(int i = 0; i < buffer.length ; i++) {
-    		res[i]=buffer[i].doubleValue();
+    		output[i]=buffer[i].doubleValue();
     	}
-
-    	double[] output = res.clone();
-
 
     	// Data display settings
     	g2.setColor(Color.WHITE);
     	g2.clearRect( 0, 0, width, height);
     	g.clearRect( 0, 0, width, height);
-
+		// set the line's width
+    	g2.setStroke(new BasicStroke(100));
+    	
+		
     	// run through the buffer
     	for(int i = 0 ; i < buffer.length ; i++) {
     		double prevPoint = (double) buffer[i];
@@ -134,9 +134,6 @@ public class TemporalView extends JPanel implements View {
     	g2.setBackground(Color.black);
 
     	g = bufferedImage.createGraphics();
-
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
     }
 
     // the waveform display

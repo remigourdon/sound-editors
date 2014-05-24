@@ -47,6 +47,7 @@ public class FFTView extends JPanel implements View {
      public FFTView(int h, int w){
     	height = h;
     	width = w;
+		add(this);
     }
 
 
