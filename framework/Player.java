@@ -115,7 +115,7 @@ public class Player extends Observable {
                 maxDuration = (Double) s.getParameterByName("Duration").getValue();
         }
 
-        for(int i = 0; i < (int) (maxDuration * Generator.SAMPLE_RATE); i++) {
+        for(int i = 0; i < (maxDuration.intValue() * Generator.SAMPLE_RATE); i++) {
             short sh = 0;
             for(Sound s : selection) {
                 if(i < (((Double) s.getParameterByName("Duration").getValue()).intValue() * Generator.SAMPLE_RATE)) {
