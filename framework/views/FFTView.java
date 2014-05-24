@@ -52,8 +52,6 @@ public class FFTView extends JPanel implements View {
 		}
     }
 
-
-
     /**
      * Main method of this class.
      *

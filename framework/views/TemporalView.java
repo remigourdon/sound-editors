@@ -12,6 +12,7 @@ import java.util.Observable;
 import javax.swing.JPanel;
 
 import framework.Sound;
+import framework.view.View;
 
 
 /**
