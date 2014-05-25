@@ -10,14 +10,16 @@ import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import framework.Sound;
 import framework.views.View;
 
 
 /**
- *	TemporalView provides a View corresponding to the Observer Pattern (MVC ?!).
- *	It uses the SignalPanel class to draw a temporal representation of the model's buffer.
+ * TemporalView provides a View corresponding to the Observer Pattern.
+ * It draws a temporal representation of the model's data.
  *
  */
 public class TemporalView extends JPanel implements View {
@@ -35,7 +37,7 @@ public class TemporalView extends JPanel implements View {
 	
     }
 
-	/**
+     /**
      * Implementation of view's method.
      *
      *
