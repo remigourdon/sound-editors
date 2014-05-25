@@ -90,8 +90,6 @@ public class TemporalView extends JPanel implements View {
     				buffer.length - (i+1),
     				prevPoint + height/2
     				));
-
-    		System.out.println("Buffer = "+ buffer[i]);
     		currentPoint = prevPoint;
 
     	}
@@ -143,9 +141,6 @@ public class TemporalView extends JPanel implements View {
 
     	g = bufferedImage.createGraphics();
     }
-
-    // the waveform display
-    //private SignalPanel signalPanel;
 
     // Panel visual settings
     private int height;
