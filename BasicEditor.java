@@ -35,6 +35,14 @@ public class BasicEditor extends Editor {
             JLabel label = new JLabel("Sound " + i);
             linePanel.add(label);
 
+            JButton playButton = new JButton(new ImageIcon("framework/editors/icons/play.png"));
+            playButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    player.play(sound);
+                }
+            });
+            linePanel.add(playButton);
+
             TemporalView v = new TemporalView(200, 100);
             s.attachView(v);
             linePanel.add(v);
