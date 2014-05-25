@@ -6,6 +6,9 @@ import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
+
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import framework.Sound;
@@ -28,7 +31,7 @@ public class FFTView extends JPanel implements View {
      public FFTView(int h, int w){
     	height = h;
     	width = w;
-	
+
     }
 
 
