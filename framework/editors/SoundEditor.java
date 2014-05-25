@@ -7,12 +7,15 @@ import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
 
 import framework.Sound;
 import framework.generators.Generator;
 import framework.generators.GeneratorPrototyper;
 import framework.parameters.Parameter;
 import framework.modifiers.Modifier;
+import framework.modifiers.ModifierPrototyper;
 
 /**
  * Editor for Sound object.
@@ -41,10 +44,18 @@ public class SoundEditor extends JFrame {
 
         // Generator selector
         final JComboBox generatorsList = new JComboBox(GeneratorPrototyper.getPrototypes());
-        generatorsList.setSelectedItem(sound.getGenerator());
+        // Set the selected item to be the current Sound Generator
+        for(Generator g : GeneratorPrototyper.getPrototypes()) {
+            if(g.getClass().getName() == sound.getGenerator().getClass().getName())
+                generatorsList.setSelectedItem(g);
+        }
         generatorsList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                sound.setGenerator((Generator) generatorsList.getSelectedItem());
+                // Get selected Generator
+                Generator sg = (Generator) generatorsList.getSelectedItem();
+
+                // Clone it and give it to the Sound object
+                sound.setGenerator((Generator) sg.clone());
             }
         });
         basicPanel.add(generatorsList);
@@ -65,12 +76,35 @@ public class SoundEditor extends JFrame {
 
         modifPanel.add(new JLabel("Modifiers"));
 
+        // New modif panel
+        final JPanel newModifPanel = new JPanel();
+        final JComboBox modifiersList = new JComboBox(ModifierPrototyper.getPrototypes());
+        JButton newModifButton = new JButton(new ImageIcon("framework/editors/icons/plus.png"));
+        newModifButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Get selected Modifier
+                Modifier sm = (Modifier) modifiersList.getSelectedItem();
+
+                // Clone it
+                Modifier m = (Modifier) sm.clone();
+
+                // Add to the sound
+                sound.addModifier(m);
+
+                // Attach editor and add to the JPanel
+                newModifPanel.add(m.attachEditor());
+            }
+        });
+        newModifPanel.add(modifiersList);
+        newModifPanel.add(newModifButton);
+        modifPanel.add(newModifPanel);
+
+        // Append the modifiers already attached to the Sound
         for(Modifier m : sound.getModifiers()) {
             modifPanel.add(m.attachEditor());
         }
 
         add(modifPanel);
-
 
         pack();
         setVisible(true);
