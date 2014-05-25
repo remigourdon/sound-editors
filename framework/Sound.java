@@ -83,6 +83,7 @@ public class Sound extends Observable implements Observer {
      * @param m the Modifier to be added
      */
     public void addModifier(Modifier m) {
+        m.attachSound(this);
         modifiers.add(m);
         generateSignal();
     }

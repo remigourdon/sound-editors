@@ -13,9 +13,10 @@ import framework.editors.ModifierEditor;
  */
 public abstract class Modifier extends Observable implements Observer {
     /**
-     * Create a Modifier object.
+     * Attach a Sound object to the Modifier.
+     * @param  s the new Sound object to be attached
      */
-    public Modifier(Sound s) {
+    public void attachSound(Sound s) {
         addObserver(s);
     }
 
