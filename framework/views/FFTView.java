@@ -159,7 +159,8 @@ public class FFTView extends JPanel implements View {
     	}
 		// ( Image, x, y, theOberserver )
     	g.drawImage(bufferedImage, 0, 0, this);
-
+	
+	// added, see TemporalView.java (not working)
 	JLabel ImgLabel = new JLabel(new ImageIcon(bufferedImage));
     	add(ImgLabel);
     	getParent().add(this);
@@ -184,7 +185,7 @@ public class FFTView extends JPanel implements View {
     	// Alpha Red Green Blue
     	bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB);
 
-    	// creates a Graphics2D to draw into the BufferedImage
+    	// draw on the BufferedImage
     	g2 = bufferedImage.createGraphics();
     	g = bufferedImage.createGraphics();
     	// now we can draw using g2 and g and the method draw()
