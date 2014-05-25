@@ -12,8 +12,6 @@ import java.util.Observable;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import framework.Sound;
 import framework.views.View;
@@ -57,7 +55,13 @@ public class TemporalView extends JPanel implements View {
 
 
 		if( (boolean) dataChanged) {
-			this.drawData(data);
+		    // plot the new waveform
+		    this.drawData(data);
+		    
+		    // add to the panel
+		    imgLabel = new JLabel(new ImageIcon(bufferedImage));
+		    add(imgLabel);
+		    getParent().add(this);
 
 		}
     }
@@ -115,12 +119,9 @@ public class TemporalView extends JPanel implements View {
 		if(bufferedImage == null){
     		init();
     	}
-		// ( Image, x, y, theOberserver )
+	// ( Image, x, y, theOberserver )
     	g.drawImage(bufferedImage, 0, 0, this);
 
-	JLabel ImgLabel = new JLabel(new ImageIcon(bufferedImage));
-    	add(ImgLabel);
-    	getParent().add(this);
 
     }
 
@@ -159,4 +160,6 @@ public class TemporalView extends JPanel implements View {
     // Memorizing the y1 point (c.f drawData() )
     private double currentPoint;
 
+    // plot result is stored here before adding it to the JPanel
+    private JLabel imgLabel;
 }
