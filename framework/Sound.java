@@ -100,24 +100,11 @@ public class Sound extends Observable implements Observer {
      * @param ms the list of modifiers to be applied
      */
     public void applyModifiers(ArrayList<Modifier> ms) {
-        Double[] newData = data;
+        Double[] newData = data.clone();
         for(Modifier m : ms) {
-            newData = m.apply(newData);
+            newData = m.apply(newData, frequency.getValue(), duration.getValue());
         }
         data = newData;
-    }
-
-    /**
-     * Get a Parameter object according to its name.
-     * @param  s the required name
-     * @return   the Parameter if it has been found, null otherwise
-     */
-    public Parameter getParameterByName(String s) {
-        for(Parameter p : getParameters()) {
-            if(p.getName() == s)
-                return p;
-        }
-        return null;
     }
 
     /**

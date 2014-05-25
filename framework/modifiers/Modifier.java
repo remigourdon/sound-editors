@@ -40,9 +40,11 @@ public abstract class Modifier extends Observable implements Observer {
     /**
      * Apply the transformations to the array and return the new data.
      * @param  data the current data
+     * @param  f    the frequency of the Sound
+     * @param  d    the duration of the Sound
      * @return      the new data
      */
-    public abstract Double[] apply(Double[] data);
+    public abstract Double[] apply(Double[] data, Double f, Double d);
 
     /**
      * Get all the parameters of the Modifier object.
