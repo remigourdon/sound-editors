@@ -93,6 +93,7 @@ public class SoundEditor extends JFrame {
 
                 // Attach editor and add to the JPanel
                 modifPanel.add(m.attachEditor());
+                pack();
             }
         });
         newModifPanel.add(modifiersList);
