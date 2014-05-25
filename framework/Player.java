@@ -101,11 +101,10 @@ public class Player extends Observable {
     }
 
     /**
-     * Play all the Sound objects which are not muted.
+     * Play the selection of Sound objects.
+     * @param sel the selection
      */
-    public void playAll() {
-        ArrayList<Sound> selection = getPlayableSounds();
-
+    public void playSelection(ArrayList<Sound> selection) {
         line.start();
 
         // Find the maximum duration and save datas
@@ -144,6 +143,13 @@ public class Player extends Observable {
         line.stop();
 
         bufferSize = 0;
+    }
+
+    /**
+     * Play all the Sound objects which are not muted.
+     */
+    public void playAll() {
+        playSelection(getPlayableSounds());
     }
 
     /**
