@@ -71,6 +71,7 @@ public abstract class Editor extends JFrame implements Observer {
         GeneratorPrototyper.addGenerator(new SquareGenerator());
         GeneratorPrototyper.addGenerator(new SawtoothGenerator());
         GeneratorPrototyper.addGenerator(new TriangleGenerator());
+        GeneratorPrototyper.addGenerator(new GuitarGenerator());
     }
 
     protected Player player;
