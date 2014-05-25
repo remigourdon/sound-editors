@@ -77,7 +77,7 @@ public class Player extends Observable {
 
         line.start();
 
-        for(int i = 0; i < ((Double) s.getParameterByName("Duration").getValue()).intValue() * Generator.SAMPLE_RATE; i++) {
+        for(int i = 0; i < data.length; i++) {
             // Clip
             if (data[i] < -1.0) data[i] = -1.0;
             if (data[i] > +1.0) data[i] = +1.0;
@@ -108,18 +108,20 @@ public class Player extends Observable {
 
         line.start();
 
-        // Find the maximum duration
-        Double maxDuration = new Double(0);
+        // Find the maximum duration and save datas
+        int maxDuration = 0;
+        ArrayList<Double[]> datas = new ArrayList<Double[]>();
         for(Sound s : selection) {
-            if((Double) s.getParameterByName("Duration").getValue() > maxDuration)
-                maxDuration = (Double) s.getParameterByName("Duration").getValue();
+            Double[] data = s.getData();
+            if(data.length > maxDuration)
+                maxDuration = data.length;
+            datas.add(data);
         }
 
-        for(int i = 0; i < (maxDuration.intValue() * Generator.SAMPLE_RATE); i++) {
+        for(int i = 0; i < maxDuration; i++) {
             short sh = 0;
-            for(Sound s : selection) {
-                if(i < (((Double) s.getParameterByName("Duration").getValue()).intValue() * Generator.SAMPLE_RATE)) {
-                    Double[] data = s.getData();
+            for(Double[] data : datas) {
+                if(i < data.length) {
 
                     // Clip
                     if (data[i] < -1.0) data[i] = -1.0;
