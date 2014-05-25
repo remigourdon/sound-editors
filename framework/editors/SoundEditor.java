@@ -71,7 +71,7 @@ public class SoundEditor extends JFrame {
         /////////////////////
         // Modifiers panel //
         /////////////////////
-        JPanel modifPanel = new JPanel();
+        final JPanel modifPanel = new JPanel();
         modifPanel.setLayout(new BoxLayout(modifPanel, BoxLayout.Y_AXIS));
 
         modifPanel.add(new JLabel("Modifiers"));
@@ -92,7 +92,7 @@ public class SoundEditor extends JFrame {
                 sound.addModifier(m);
 
                 // Attach editor and add to the JPanel
-                newModifPanel.add(m.attachEditor());
+                modifPanel.add(m.attachEditor());
             }
         });
         newModifPanel.add(modifiersList);
