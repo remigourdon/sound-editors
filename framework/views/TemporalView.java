@@ -18,8 +18,8 @@ import framework.views.View;
 
 
 /**
- *	TemporalView provides a View corresponding to the Observer Pattern (MVC ?!).
- *	It uses the SignalPanel class to draw a temporal representation of the model's buffer.
+ * TemporalView provides a View corresponding to the Observer Pattern.
+ * It draws a temporal representation of the model's data.
  *
  */
 public class TemporalView extends JPanel implements View {
@@ -37,7 +37,7 @@ public class TemporalView extends JPanel implements View {
 
     }
 
-	/**
+     /**
      * Implementation of view's method.
      *
      *
@@ -55,7 +55,13 @@ public class TemporalView extends JPanel implements View {
 
 
 		if( (boolean) dataChanged) {
-			this.drawData(data);
+		    // plot the new waveform
+		    this.drawData(data);
+		    
+		    // add to the panel
+		    imgLabel = new JLabel(new ImageIcon(bufferedImage));
+		    add(imgLabel);
+		    getParent().add(this);
 
 		}
     }
@@ -113,12 +119,9 @@ public class TemporalView extends JPanel implements View {
 		if(bufferedImage == null){
     		init();
     	}
-		// ( Image, x, y, theOberserver )
+	// ( Image, x, y, theOberserver )
     	g.drawImage(bufferedImage, 0, 0, this);
 
-	JLabel ImgLabel = new JLabel(new ImageIcon(bufferedImage));
-    	add(ImgLabel);
-    	getParent().add(this);
 
     }
 
@@ -157,4 +160,6 @@ public class TemporalView extends JPanel implements View {
     // Memorizing the y1 point (c.f drawData() )
     private double currentPoint;
 
+    // plot result is stored here before adding it to the JPanel
+    private JLabel imgLabel;
 }

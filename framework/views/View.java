@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.Observer;
 
 /**
- * According to the Observer design pattern, each view must extend this interface.
+ * Views implementing this interface get updated when the model's data changes.
  *
  */
 public interface View extends Observer {
