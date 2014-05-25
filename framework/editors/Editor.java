@@ -13,6 +13,7 @@ import java.util.Observer;
 
 import framework.Player;
 import framework.generators.*;
+import framework.modifiers.*;
 
 /**
  * Abstract class to support the main window of the application.
@@ -29,7 +30,8 @@ public abstract class Editor extends JFrame implements Observer {
         super(name);
         player = pl;
 
-        fillPrototyper();
+        fillGeneratorPrototyper();
+        fillModifierPrototyper();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BoxLayout(
@@ -65,13 +67,28 @@ public abstract class Editor extends JFrame implements Observer {
      */
     public abstract JComponent createCentralComponent();
 
-    protected void fillPrototyper() {
+    /**
+     * Fill the GeneratorPrototyper with standard generators.
+     *
+     * This method should be overloaded to integrate custom generators.
+     */
+    protected void fillGeneratorPrototyper() {
         // Add basic generators to the prototyper
         GeneratorPrototyper.addGenerator(new SineGenerator());
         GeneratorPrototyper.addGenerator(new SquareGenerator());
         GeneratorPrototyper.addGenerator(new SawtoothGenerator());
         GeneratorPrototyper.addGenerator(new TriangleGenerator());
         GeneratorPrototyper.addGenerator(new GuitarGenerator());
+    }
+
+    /**
+     * Fill the ModifierPrototyper with standard modifiers.
+     *
+     * This method should be overloaded to integrate custom modifiers.
+     */
+    protected void fillModifierPrototyper() {
+        // Add basic modifiers to the prototyper
+        ModifierPrototyper.addModifier(new Delay());
     }
 
     protected Player player;
