@@ -27,43 +27,61 @@ public class TemporalView extends JPanel implements View {
 
     /**
      * Build a TemporalView.
-     * @param int h	Height of the panel.
      * @param int w Width of the panel.
+     * @param int h	Height of the panel.
      * @param Sound s The sound to be displayed.
      */
-    public TemporalView(int h, int w){
-    	height = h;
-    	width = w;
+    public TemporalView(int w, int h){
 
+	// panel size settings
+    	width = w;
+	height = h;
+	// build the bufferImage
+	bufferedImage = new BufferedImage( 
+					  width,
+					  height,
+					  BufferedImage.TYPE_INT_ARGB
+					   );
+	// creates the "pen" to draw on bufferedimages
+    	g2 = bufferedImage.createGraphics();
+    	gPen = bufferedImage.createGraphics();
+	// set the line's width : 100
+    	g2.setStroke(new BasicStroke(100));
+	// set background color : black
+	g2.setBackground(Color.black);
+	// set the pen's color : white
+    	g2.setColor(Color.WHITE);
+	// convert the new one to be able to add it
+	imgLabel = new JLabel(new ImageIcon(bufferedImage));
+	// add the new one to this panel
+	add(imgLabel);
+	// display the whole canvas with the last strokes
+	repaint();
+	System.out.println("1");
     }
 
      /**
-     * Implementation of view's method.
-     *
-     *
+ 
+     * 
      * The update method is called when a change occurs in the model (theSound).
-     * @param Observable o   			The sound model.
+     * @param Observable o   		The sound model.
      * @param Object     dataChanged 	Is a boolean indicating if the model has been modified.
      * @Override
      */
     public void update(Observable o, Object dataChanged) {
 
-		// Retrieving the sound model
-		Sound s = (Sound) o;
-		// Retrieving the sound buffer
-		Double[] data = s.getData();
+	// Retrieving the sound model
+	Sound s = (Sound) o;
 
-
-		if( (boolean) dataChanged) {
-		    // plot the new waveform
-		    this.drawData(data);
-		    
-		    // add to the panel
-		    imgLabel = new JLabel(new ImageIcon(bufferedImage));
-		    add(imgLabel);
-		    getParent().add(this);
-
-		}
+	// Retrieving the sound buffer
+	Double[] data = s.getData();	
+	System.out.println("6");
+	if( (boolean) dataChanged) {
+	    System.out.println("5");
+	    // plot the new waveform
+	    this.drawData(data);
+	    System.out.println("4");
+	}
     }
 
     /**
@@ -72,22 +90,18 @@ public class TemporalView extends JPanel implements View {
      * @param	Double	buffer	the data array to be plotted
      */
     public void drawData(Double[] buffer) {
-
+	
     	// convert Double[] to double[]
     	double[] output = new double[buffer.length];
     	for(int i = 0; i < buffer.length ; i++) {
     		output[i]=buffer[i].doubleValue();
     	}
+	
+	// erase previous strokes
+	g2.clearRect( 0, 0, width, height);
+    	gPen.clearRect( 0, 0, width, height);
 
-    	// Data display settings
-    	g2.setColor(Color.WHITE);
-    	g2.clearRect( 0, 0, width, height);
-    	g.clearRect( 0, 0, width, height);
-		// set the line's width
-    	g2.setStroke(new BasicStroke(100));
-
-
-    	// run through the buffer
+    	// Go through the whole data and connects the dots
     	for(int i = 0 ; i < buffer.length ; i++) {
     		double prevPoint = (double) buffer[i];
     		// MEMENTO : Line2D.Double( x1, y1, x2, y2)
@@ -102,64 +116,50 @@ public class TemporalView extends JPanel implements View {
 
     	}
     	// adding the x axis
-    	g.draw( new Line2D.Double(
+    	gPen.draw( new Line2D.Double(
     			0 ,
-				height/2,
-				width,
-				height/2
-				));
+			height/2,
+			width,
+			height/2
+				  ));
+
+	//take out the old one from this panel
+	remove(imgLabel);
+	// creates the new label corresponding to the last bufferImage
+	imgLabel = new JLabel(new ImageIcon(bufferedImage));
+	// add the label to this panel
+	add(imgLabel);
+
+	// calls paintComponent()
     	repaint();
+	System.out.println("2");
     }
 
-	@Override
+    @Override
     protected void paintComponent(Graphics g) {
     	// calling mother's method
     	super.paintComponent(g);
-
-		if(bufferedImage == null){
-    		init();
-    	}
-	// ( Image, x, y, theOberserver )
+	// draws on the bufferedImage
     	g.drawImage(bufferedImage, 0, 0, this);
-
-
-    }
-
-    /**
-     * Defines the fundamentals aspects settings
-     * Helper method
-     *
-     *
-     */
-    private void init(){
-    	// size settings
-    	width = getWidth();
-    	height = getHeight();
-
-    	// image settings :
-    	// 8 bit
-    	// Alpha Red Green Blue
-    	bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB);
-
-    	g2 = bufferedImage.createGraphics();
-    	g2.setBackground(Color.black);
-
-    	g = bufferedImage.createGraphics();
+	g2.drawImage(bufferedImage, 0, 0, this);
+	gPen.drawImage(bufferedImage, 0, 0, this);
+	System.out.println("3");
     }
 
     // Panel visual settings
     private int height;
     private int width;
 
-    // Used to draw the sound
+    // The "canvas"
     private BufferedImage bufferedImage;
-    public Graphics2D g2;
 
-    public Graphics2D g;
+    //The "pens"
+    private Graphics2D g2;
+    private Graphics2D gPen;
 
     // Memorizing the y1 point (c.f drawData() )
     private double currentPoint;
 
-    // plot result is stored here before adding it to the JPanel
+    // The bufferedimage is stored here before adding it to the JPanel
     private JLabel imgLabel;
 }
