@@ -149,7 +149,7 @@ public class Sound extends Observable implements Observer {
      * @return the data as an array of Doubles
      */
     public Double[] getData() {
-        return data;
+        return data.clone();
     }
 
     private Generator           generator;
