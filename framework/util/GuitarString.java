@@ -35,8 +35,7 @@ public class GuitarString {
      * Apply the Karplus-Strong update.
      */
     public void tic() {
-        Double first = buffer.dequeue();
-        buffer.enqueue((first * buffer.peek()) * 0.5 * ENERGY_DECAY_FACTOR);
+        buffer.enqueue((buffer.dequeue() + buffer.peek()) / 2 * ENERGY_DECAY_FACTOR);
     }
 
     /**
