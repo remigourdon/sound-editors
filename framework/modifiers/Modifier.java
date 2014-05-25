@@ -11,7 +11,7 @@ import framework.editors.ModifierEditor;
 /**
  * Abstract class to represent all kind of filters and effects.
  */
-public abstract class Modifier extends Observable implements Observer {
+public abstract class Modifier extends Observable implements Observer, Cloneable {
     /**
      * Attach a Sound object to the Modifier.
      * @param  s the new Sound object to be attached
@@ -37,6 +37,24 @@ public abstract class Modifier extends Observable implements Observer {
         return new ModifierEditor(this);
     }
 
+    public Object clone() {
+        Object o = null;
+        try {
+            o = super.clone();
+        } catch(CloneNotSupportedException e) {
+            e.printStackTrace(System.err);
+        }
+        return o;
+    }
+
+    /**
+     * Get the name of the Modifier (clearer than toString() for this purpose).
+     * @return the name of the Modifier
+     */
+    public String getName() {
+        return toString();
+    }
+
     /**
      * Apply the transformations to the array and return the new data.
      * @param  data the current data
@@ -51,14 +69,6 @@ public abstract class Modifier extends Observable implements Observer {
      * @return the array of Parameter
      */
     public abstract Parameter[] getParameters();
-
-    /**
-     * Get the name of the Modifier (clearer than toString() for this purpose).
-     * @return the name of the Modifier
-     */
-    public String getName() {
-        return toString();
-    }
 
     public abstract String toString();
 }

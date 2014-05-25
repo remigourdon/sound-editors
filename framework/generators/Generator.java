@@ -3,7 +3,17 @@ package framework.generators;
 /**
  * Abstract class to represent a wave generator.
  */
-public abstract class Generator {
+public abstract class Generator implements Cloneable {
+    public Object clone() {
+        Object o = null;
+        try {
+            o = super.clone();
+        } catch(CloneNotSupportedException e) {
+            e.printStackTrace(System.err);
+        }
+        return o;
+    }
+
     /**
      * Generates the signal with the given frequency and duration.
      * @param  f  the frequency of the sample in hertzs
