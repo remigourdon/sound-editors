@@ -32,10 +32,10 @@ public class TemporalView extends JPanel implements View {
      * @param Sound s The sound to be displayed.
      */
     public TemporalView(int w, int h){
-
 	// panel size settings
     	width = w;
 	height = h;
+
 	// build the bufferImage
 	bufferedImage = new BufferedImage( 
 					  width,
@@ -51,15 +51,15 @@ public class TemporalView extends JPanel implements View {
 	g2.setBackground(Color.black);
 	// set the pen's color : white
     	g2.setColor(Color.WHITE);
-
 	// convert the new bufferedImage to be able to add it
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
+	// add the label to this panel
+	add(imgLabel);
 	// display the whole canvas with the last strokes
 	repaint();
-	System.out.println("Constructor");
     }
 
-     /** 
+     /**
      * 
      * The update method is called when a change occurs in the model (theSound).
      * @param Observable o   		The sound model.
@@ -97,20 +97,13 @@ public class TemporalView extends JPanel implements View {
 		maxVal = output[i];
 	    }
     	}
-	System.out.println("Maximum value: "+maxVal);
 	
-	if(maxVal <= 1) {
-	    for(int i = 0 ; i < output.length ; i++) {
-		output[i] = output[i] * 100 * (height/2);
-	    }
+	// dunno why but Guitar always have /100 lower values
 
-	}
-	else{
-	    for(int i = 0 ; i < output.length ; i++) {
-		output[i] = output[i] * (height/2);
-	    }
-	}
-	
+	// scaling 
+	for(int i = 0 ; i < output.length ; i++) {
+	    output[i] = output[i] *  (height/2);
+	}    	
 
 	// erase previous strokes
 	g2.clearRect( 0, 0, width, height);
@@ -121,7 +114,7 @@ public class TemporalView extends JPanel implements View {
     	for(int i = 0 ; i < buffer.length ; i++) {
     		double prevPoint = (double) output[i];
     		// MEMENTO : Line2D.Double( x1, y1, x2, y2)
-    		// Previous point = (x1,y1) & Current point = (x2,y2)
+    		// Prev point = (x1,y1) & Current point = (x2,y2)
     		g2.draw( new Line2D.Double(
 					   buffer.length - i ,
 					   currentPoint + height/2 ,
@@ -140,17 +133,13 @@ public class TemporalView extends JPanel implements View {
 				   width,
 				   height/2
 				  ));
-	
-	//take out the old one from this panel
-	//remove(imgLabel);
+
 	// creates the new label corresponding to the last bufferImage
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
-	// add the label to this panel
-	add(imgLabel);
+
 	// calls paintComponent()
     	repaint();
 
-	System.out.println("DrawData");
     }
 
     @Override
@@ -161,7 +150,6 @@ public class TemporalView extends JPanel implements View {
 	// draws on the bufferedImage
 	g2.drawImage(bufferedImage, 0, 0, this);
 
-	System.out.println("paintComponent");
     }
 
     // Panel visual settings
@@ -179,4 +167,5 @@ public class TemporalView extends JPanel implements View {
 
     // The bufferedimage is stored here before adding it to the JPanel
     private JLabel imgLabel;
+
 }

@@ -22,6 +22,8 @@
  *   Software.
  */
 
+package framework.views;
+
 
 public class Fft {
 	

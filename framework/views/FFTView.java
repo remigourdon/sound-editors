@@ -1,3 +1,5 @@
+package framework.views;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -22,7 +24,6 @@ import framework.views.View;
  */
 public class FFTView extends JPanel implements View {
 
-
     /**
      * Build a FFT view.
      * @param int h	Height of the panel.
@@ -43,15 +44,15 @@ public class FFTView extends JPanel implements View {
 	// creates the "pen" to draw on bufferedimages
     	g2 = bufferedImage.createGraphics();
 	// set the line's width : 100
-    	g2.setStroke(new BasicStroke(1));
+    	g2.setStroke(new BasicStroke(2));
 	// set background color : black
 	g2.setBackground(Color.black);
 	// set the pen's color : white
     	g2.setColor(Color.WHITE);
-
-
 	// convert the new bufferedImage to be able to add it
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
+	// add the label to this panel
+	add(imgLabel);
 	// display the whole canvas with the last strokes
 	repaint();
 
@@ -62,20 +63,20 @@ public class FFTView extends JPanel implements View {
      * Implementation of view's method.
      *
      * The update method is called when a change occurs in the model (Sound).
-     * @param Observable o   			The sound model.
+     * @param Observable o   		The sound model.
      * @param Object     dataChanged 	Is a boolean indicating if the model has been modified.
      * @Override
      */
     public void update(Observable o, Object dataChanged) {
 
-		// Retrieving the sound model
-		Sound s = (Sound) o;
-		// Retrieving the sound buffer
-		Double[] data = s.getData();
-
-		if( (boolean) dataChanged) {
-			this.drawData(data);
-		}
+	// Retrieving the sound model
+	Sound s = (Sound) o;
+	// Retrieving the sound buffer
+	Double[] data = s.getData();
+	
+	if( (boolean) dataChanged) {
+	    this.drawData(data);
+	}
     }
 
     /**
@@ -88,49 +89,46 @@ public class FFTView extends JPanel implements View {
 
     	// -- Convert Double[] to double[] --
     	// because transform() only takes doubles
-    	double[] res= new double[data.length];
-    	for (int i = 0; i < data.length; i++) {
-            res[i] = data[i].doubleValue();
-        }
     	double[] output = new double[data.length];
-    	output = res;
-
+    	for (int i = 0; i < data.length; i++) {
+            output[i] = data[i].doubleValue();
+        }
+    	
     	// -- APPLY THE ALGORITHM --
-
-    	Fft fft = new Fft();
-    	fft.transform(res, res); // Awesome job ! Thanks to Nayuki Minase ! (see Fft.java)
-
+    	Fft fft = new Fft(); //(see Fft.java)
+    	fft.transform(output, output); // Awesome job ! Thanks to Nayuki Minase ! 
     	// -- ------------------- --
 
-    	// get rid of the imaginary part
-    	for (int i = 0; i < output.length; i++) {
-            if(output[i] < 0)
-            	output[i] = 0;
-        }
+	// scale test
+	for(int i = 0 ; i < output.length ; i++) {
+	    output[i] *= height * 10 ;
+	}
 
 	g2.clearRect( 0, 0, width, height);
 
-    	g2.setColor(Color.WHITE);    	
+    	g2.setColor(Color.RED);
     	
     	// set the origin on the down-left corner
     	g2.translate(0, height - 1);
-
+	
+	// 3 differents formats
+	if(height <=100 && width <= 200){
+	    g2.scale(0.0053, -0.0002);
+	}
     	// Pick the scale in function of the size of the panel
-    	if(height <= 200 && width <= 400){
-    		// Scale format : (125;300) (h;w)
-        	g2.scale(0.005, -0.0002);
-
+    	else if(height <= 200 && width <= 400){
+	    // Scale format : (125;300) (h;w)
+	    g2.scale(0.005, -0.0002);
     	}
     	else{
-    		// Scale format : (250;600) (h;w)
-        	g2.scale(0.06, -0.0002);
+	    // Scale format : (250;600) (h;w)
+	    g2.scale(0.06, -0.0002);
     	}
-
+	
     	// plot the whole buffer
     	for(int i = 0 ; i < output.length ; i++) {
-
     		double currentPoint = (double) output[i];
-    		// MEMENTO : Line2D.Double( x1, y1, x2, y2)
+    		// MEMENTO: Line2D.Double( x1, y1, x2, y2)
     		// Previous point = (x1,y1) & Current point = (x2,y2)
 
     		// links the previous point to the current point
@@ -143,15 +141,7 @@ public class FFTView extends JPanel implements View {
     		prevPoint = currentPoint;
     	};
 	
-	g2.setColor(Color.RED);
-
-    	// drawing the y axis
-    	g2.draw( new Line2D.Double(
-    			0 ,
-				0,
-				0,
-				height
-				));
+	g2.setColor(Color.WHITE);
 
     	// adding the x axis
     	g2.draw( new Line2D.Double(
@@ -163,23 +153,19 @@ public class FFTView extends JPanel implements View {
 
 	// creates the new label corresponding to the last bufferImage
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
-	// add the label to this panel
-	add(imgLabel);
-
-    	repaint();// calls paintComponent()
+   	repaint();// calls paintComponent()
 
     }
 
 	@Override
-    protected void paintComponent(Graphics graph) {
+    protected void paintComponent(Graphics g) {
     	// calling mother's method
-    	super.paintComponent(graph);
+    	super.paintComponent(g);
 
-       	// ( Image, x, y, theOberserver )
+       	// draw on the bufferedImage
     	g2.drawImage(bufferedImage, 0, 0, this);
-	
-    }
 
+    }
 
     // Panel visual settings
     private int height;
