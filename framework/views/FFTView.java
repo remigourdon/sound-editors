@@ -150,20 +150,20 @@ public class FFTView extends JPanel implements View {
     }
 
 	@Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics graph) {
     	// calling mother's method
-    	super.paintComponent(g);
+    	super.paintComponent(graph);
 
     	if(bufferedImage == null){
     		init();
     	}
-		// ( Image, x, y, theOberserver )
+	// ( Image, x, y, theOberserver )
     	g.drawImage(bufferedImage, 0, 0, this);
 	
 	// added, see TemporalView.java (not working)
 	JLabel ImgLabel = new JLabel(new ImageIcon(bufferedImage));
     	add(ImgLabel);
-    	getParent().add(this);
+    	
 
 
     }

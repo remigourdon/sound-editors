@@ -42,22 +42,22 @@ public class TemporalView extends JPanel implements View {
 					  height,
 					  BufferedImage.TYPE_INT_ARGB
 					   );
+
 	// creates the "pen" to draw on bufferedimages
     	g2 = bufferedImage.createGraphics();
-    	gPen = bufferedImage.createGraphics();
 	// set the line's width : 100
-    	g2.setStroke(new BasicStroke(100));
+    	g2.setStroke(new BasicStroke(1));
 	// set background color : black
 	g2.setBackground(Color.black);
 	// set the pen's color : white
     	g2.setColor(Color.WHITE);
-	// convert the new one to be able to add it
+
+
+	// convert the new bufferedImage to be able to add it
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
-	// add the new one to this panel
-	add(imgLabel);
 	// display the whole canvas with the last strokes
 	repaint();
-	System.out.println("1");
+	System.out.println("Constructor");
     }
 
      /**
@@ -75,12 +75,10 @@ public class TemporalView extends JPanel implements View {
 
 	// Retrieving the sound buffer
 	Double[] data = s.getData();	
-	System.out.println("6");
+	System.out.println("update");
 	if( (boolean) dataChanged) {
-	    System.out.println("5");
 	    // plot the new waveform
 	    this.drawData(data);
-	    System.out.println("4");
 	}
     }
 
@@ -99,8 +97,9 @@ public class TemporalView extends JPanel implements View {
 	
 	// erase previous strokes
 	g2.clearRect( 0, 0, width, height);
-    	gPen.clearRect( 0, 0, width, height);
 
+	g2.setColor(Color.WHITE);
+	//g2.scale(width,height);
     	// Go through the whole data and connects the dots
     	for(int i = 0 ; i < buffer.length ; i++) {
     		double prevPoint = (double) buffer[i];
@@ -113,10 +112,12 @@ public class TemporalView extends JPanel implements View {
     				prevPoint + height/2
     				));
     		currentPoint = prevPoint;
-
     	}
+
+	g2.setColor(Color.RED);
+
     	// adding the x axis
-    	gPen.draw( new Line2D.Double(
+    	g2.draw( new Line2D.Double(
     			0 ,
 			height/2,
 			width,
@@ -132,18 +133,20 @@ public class TemporalView extends JPanel implements View {
 
 	// calls paintComponent()
     	repaint();
-	System.out.println("2");
+	System.out.println("DrawData");
     }
 
     @Override
     protected void paintComponent(Graphics g) {
     	// calling mother's method
     	super.paintComponent(g);
+	//Graphics2D g2 = (Graphics2D)g;
+
+	
 	// draws on the bufferedImage
-    	g.drawImage(bufferedImage, 0, 0, this);
 	g2.drawImage(bufferedImage, 0, 0, this);
-	gPen.drawImage(bufferedImage, 0, 0, this);
-	System.out.println("3");
+
+	System.out.println("paintComponent");
     }
 
     // Panel visual settings
@@ -153,9 +156,8 @@ public class TemporalView extends JPanel implements View {
     // The "canvas"
     private BufferedImage bufferedImage;
 
-    //The "pens"
+    //The "pen"
     private Graphics2D g2;
-    private Graphics2D gPen;
 
     // Memorizing the y1 point (c.f drawData() )
     private double currentPoint;
