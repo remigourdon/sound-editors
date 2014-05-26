@@ -20,6 +20,9 @@ public class LowPassFilter extends Modifier {
         result[0] = data[0];
         for(int i = 1; i < data.length; i++)
             result[i] = alpha.getValue() * data[i] + (1 - alpha.getValue()) * result[i - 1];
+
+        assert result.length == data.length:
+            "violated postcondition: result.length == data.length";
         return result;
     }
 
