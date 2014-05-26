@@ -12,6 +12,7 @@ import java.util.Observable;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import java.awt.geom.Rectangle2D;
 
 import framework.Sound;
 import framework.views.View;
@@ -63,9 +64,6 @@ public class FFTView extends JPanel implements View {
 	    // Scale format : (250;600) (h;w)
 	    g2.scale(0.06, -0.0002);
     	}
-
-       	// set the pen's color : white
-    	g2.setColor(Color.WHITE);
 	
 	// convert the new bufferedImage to be able to add it
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
@@ -89,10 +87,10 @@ public class FFTView extends JPanel implements View {
 	// Retrieving the sound model
 	Sound s = (Sound) o;
 	// Retrieving the sound buffer
-	Double[] data = s.getData();
+	Double[] dataS = s.getData();
 	
 	if( (boolean) dataChanged) {
-	    this.drawData(data);
+	    this.drawData(dataS);
 	}
     }
 
@@ -116,18 +114,20 @@ public class FFTView extends JPanel implements View {
     	fft.transform(output, output); // Awesome job ! Thanks to Nayuki Minase ! 
     	// -- ------------------- --
 	
+	
 	// scale test
 	for(int i = 0 ; i < output.length ; i++) {
 	    if(output[i] < 0)
 		output[i] = 0;
 	    output[i] *= height * 10 ;
 	}
-
+	
+	// doesn't do its job !
 	g2.clearRect( 0, 0, width, height);
-	// set background color : black
-	g2.setBackground(Color.BLACK);
+
+
     	g2.setColor(Color.RED);
-    	
+	
 	System.out.println("Plotting fft");
     	// plot the whole buffer
     	for(int i = 0 ; i < output.length ; i++) {
@@ -149,26 +149,32 @@ public class FFTView extends JPanel implements View {
 
     	// adding the x axis
     	g2.draw( new Line2D.Double(
-    			0 ,
-				height -1,
-				width,
-				height -1
-				));
+				   0 ,
+				   height -1,
+				   width,
+				   height -1
+				   ));
+
 	repaint();// calls paintComponent()
 	// creates the new label corresponding to the last bufferImage
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
    	repaint();// calls paintComponent()
-
     }
 
-	@Override
+    @Override
     protected void paintComponent(Graphics g) {
     	// calling mother's method
-    	super.paintComponent(g);
+   	super.paintComponent(g);
+	System.out.println("paintComponent");
+	Graphics2D gBack = (Graphics2D) g;
+	
+	// background refresh
+	gBack = (Graphics2D) g;
+	gBack.setBackground(Color.BLACK);
+	gBack.clearRect(0, 0, width, height);
 
        	// draw on the bufferedImage
-    	g2.drawImage(bufferedImage, 0, 0, this);
-
+	g2.drawImage(bufferedImage, 0, 0, this); 
     }
 
     // Panel visual settings
