@@ -48,7 +48,7 @@ public class TemporalView extends JPanel implements View {
 	// set the line's width : 100
     	g2.setStroke(new BasicStroke(1));
 	// set background color : black
-	g2.setBackground(Color.black);
+	//g2.setBackground(Color.black);
 	// set the pen's color : white
     	g2.setColor(Color.WHITE);
 	// convert the new bufferedImage to be able to add it
@@ -73,7 +73,6 @@ public class TemporalView extends JPanel implements View {
 
 	// Retrieving the sound buffer
 	Double[] data = s.getData();	
-	System.out.println("update");
 	if( (boolean) dataChanged) {
 	    // plot the new waveform
 	    this.drawData(data);
@@ -125,7 +124,7 @@ public class TemporalView extends JPanel implements View {
     	}
 
 	g2.setColor(Color.WHITE);
-
+	/*
     	// adding the x axis
     	g2.draw( new Line2D.Double(
 				   0 ,
@@ -133,7 +132,7 @@ public class TemporalView extends JPanel implements View {
 				   width,
 				   height/2
 				  ));
-
+	*/
 	// creates the new label corresponding to the last bufferImage
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
 
