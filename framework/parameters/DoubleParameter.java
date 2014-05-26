@@ -22,12 +22,18 @@ public class DoubleParameter extends Parameter<Double> {
         maxValue = max;
     }
 
+    /**
+     * @postcondition returnValue <= maxValue && returnValue >= minValue
+     */
     public Double parseValue(Double v) {
         if(v <= maxValue && v >= minValue)
             return v;
         return null;
     }
 
+    /**
+     * @postcondition returnValue <= maxValue && returnValue >= minValue
+     */
     public Double parseValue(String s) {
         try {
             return parseValue(Double.parseDouble(s));
