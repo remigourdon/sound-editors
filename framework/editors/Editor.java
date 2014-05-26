@@ -78,6 +78,7 @@ public abstract class Editor extends JFrame implements Observer {
     protected void fillModifierPrototyper() {
         // Add basic modifiers to the prototyper
         ModifierPrototyper.addModifier(new Delay());
+        ModifierPrototyper.addModifier(new LowPassFilter());
     }
 
     protected Player player;
