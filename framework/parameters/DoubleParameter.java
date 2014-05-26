@@ -15,9 +15,11 @@ public class DoubleParameter extends Parameter<Double> {
      * @param  v   the initial value of the parameter
      * @param  min the minimal value of the parameter
      * @param  max the maximal value of the parameter
+     * @precondition v <= max && v >= min
      */
     public DoubleParameter(Observer o, String n, Double v, Double min, Double max) {
         super(o, n, v);
+        assert v <= max && v >= min: "violated precondition: v <= max && v >= min";
         minValue = min;
         maxValue = max;
     }
