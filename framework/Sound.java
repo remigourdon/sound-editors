@@ -102,12 +102,16 @@ public class Sound extends Observable implements Observer {
     /**
      * Apply a list of modifiers to the Sound object.
      * @param ms the list of modifiers to be applied
+     * @postcondition newData.length == data.length
      */
     public void applyModifiers(ArrayList<Modifier> ms) {
         Double[] newData = data.clone();
         for(Modifier m : ms) {
             newData = m.apply(newData);
         }
+
+        assert newData.length == data.length: "violated postcondition: newData.length == data.length";
+
         data = newData;
     }
 
