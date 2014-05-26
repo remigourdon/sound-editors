@@ -43,19 +43,36 @@ public class FFTView extends JPanel implements View {
 
 	// creates the "pen" to draw on bufferedimages
     	g2 = bufferedImage.createGraphics();
+    	// set the origin on the down-left corner
+    	g2.translate(0, height - 1);
 	// set the line's width : 100
     	g2.setStroke(new BasicStroke(2));
 	// set background color : black
-	g2.setBackground(Color.black);
-	// set the pen's color : white
+	g2.setBackground(Color.BLACK);
+
+	// 3 differents formats
+	if(height <=100 && width <= 200){
+	    g2.scale(0.008, -0.000008);
+	}
+    	// Pick the scale in function of the size of the panel
+    	else if(height <= 200 && width <= 400){
+	    // Scale format : (125;300) (h;w)
+	    g2.scale(0.005, -0.0002);
+    	}
+    	else if(height > 200 && width >= 300){
+	    // Scale format : (250;600) (h;w)
+	    g2.scale(0.06, -0.0002);
+    	}
+
+       	// set the pen's color : white
     	g2.setColor(Color.WHITE);
+	
 	// convert the new bufferedImage to be able to add it
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
 	// add the label to this panel
 	add(imgLabel);
 	// display the whole canvas with the last strokes
 	repaint();
-
     }
 
 
@@ -98,33 +115,20 @@ public class FFTView extends JPanel implements View {
     	Fft fft = new Fft(); //(see Fft.java)
     	fft.transform(output, output); // Awesome job ! Thanks to Nayuki Minase ! 
     	// -- ------------------- --
-
+	
 	// scale test
 	for(int i = 0 ; i < output.length ; i++) {
+	    if(output[i] < 0)
+		output[i] = 0;
 	    output[i] *= height * 10 ;
 	}
 
 	g2.clearRect( 0, 0, width, height);
-
+	// set background color : black
+	g2.setBackground(Color.BLACK);
     	g2.setColor(Color.RED);
     	
-    	// set the origin on the down-left corner
-    	g2.translate(0, height - 1);
-	
-	// 3 differents formats
-	if(height <=100 && width <= 200){
-	    g2.scale(0.0053, -0.0002);
-	}
-    	// Pick the scale in function of the size of the panel
-    	else if(height <= 200 && width <= 400){
-	    // Scale format : (125;300) (h;w)
-	    g2.scale(0.005, -0.0002);
-    	}
-    	else{
-	    // Scale format : (250;600) (h;w)
-	    g2.scale(0.06, -0.0002);
-    	}
-	
+	System.out.println("Plotting fft");
     	// plot the whole buffer
     	for(int i = 0 ; i < output.length ; i++) {
     		double currentPoint = (double) output[i];
@@ -150,7 +154,7 @@ public class FFTView extends JPanel implements View {
 				width,
 				height -1
 				));
-
+	repaint();// calls paintComponent()
 	// creates the new label corresponding to the last bufferImage
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
    	repaint();// calls paintComponent()
