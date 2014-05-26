@@ -32,7 +32,7 @@ public class Sound extends Observable implements Observer {
         // Creates parameters
         frequency   = new DoubleParameter(this, "Frequency", f, 0., 20000.);
         duration    = new DoubleParameter(this, "Duration", d, 0., 60.);
-        amplitude   = new DoubleParameter(this, "Amplitude", a, 0., 100.);
+        amplitude   = new DoubleParameter(this, "Amplitude", a, 0., 1.);
 
         data = new Double[Generator.SAMPLE_RATE * duration.getValue().intValue()];
 
