@@ -7,6 +7,7 @@ public class RingBuffer {
     /**
      * Create an empty RingBuffer object of the specified capacity.
      * @param  c the capacity
+     * @postcondition size == 0 && first == 0 && last == 0
      */
     public RingBuffer(int c) {
         capacity    = c;
@@ -14,6 +15,8 @@ public class RingBuffer {
         first       = 0;
         last        = 0;
         buffer      = new Double[capacity];
+        assert size == 0 && first == 0 && last == 0:
+            "violated postcondition: size == 0 && first == 0 && last == 0";
     }
 
     /**
@@ -43,21 +46,41 @@ public class RingBuffer {
     /**
      * Add item at the end of the list.
      * @param x the item to be added
+     * @precondition    size < capacity
+     * @postcondition   size > 0 && size <= capacity
+     * @postcondition   last >= 0 && last <= capacity
      */
     public void enqueue(Double x) {
+        assert size < capacity: "violated precondition: size < capacity";
+
         buffer[last]    = x;
         last            = (last + 1) % capacity;
         size++;
+
+        assert size > 0 && size <= capacity:
+            "violated postcondition: size > 0 && size <= capacity";
+        assert last >= 0 && last <= capacity:
+            "violated postcondition: last >= 0 && last <= capacity";
     }
 
     /**
      * Delete and return the item at the front of the list.
      * @return the deleted item
+     * @precondition size > 0
+     * @postcondition size >= 0 && size < capacity
+     * @postcondition first >= 0 && first <= capacity
      */
     public Double dequeue() {
+        assert size > 0: "violated precondition: size > 0";
+
         Double item = buffer[first];
         first       = (first + 1) % capacity;
         size--;
+
+        assert size >= 0 && size < capacity:
+            "violated postcondition: size >= 0 && size < capacity";
+        assert first >= 0 && first <= capacity:
+            "violated postcondition: first >= 0 && first <= capacity";
         return item;
     }
 
