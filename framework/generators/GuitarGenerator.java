@@ -27,7 +27,7 @@ public class GuitarGenerator extends Generator {
         // Product of the average of the two first samples and the energy decay factor
         for(int i = 0; i < N; i++) {
             buffer.enqueue((buffer.dequeue() + buffer.peek()) / 2 * ENERGY_DECAY_FACTOR);
-            result[i] = buffer.peek();
+            result[i] = a * 2 * buffer.peek();
         }
 
         return result;

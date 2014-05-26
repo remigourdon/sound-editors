@@ -19,7 +19,7 @@ public class Delay extends Modifier {
         decay = new DoubleParameter(this, "Decay", 1., 0., 1.);
     }
 
-    public Double[] apply(Double[] data, Double f, Double d) {
+    public Double[] apply(Double[] data) {
         Double[] result     = new Double[data.length];
         Arrays.fill(result, 0.);
         int delaySamples    = (int) (delay.getValue() * Generator.SAMPLE_RATE);
