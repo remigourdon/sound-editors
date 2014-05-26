@@ -14,6 +14,8 @@ import framework.editors.Editor;
 import framework.Sound;
 import framework.Player;
 import framework.generators.GuitarGenerator;
+import framework.views.TemporalView;
+import framework.views.FFTView;
 
 
 /**
@@ -65,6 +67,15 @@ public class MatrixEditor extends Editor {
     public JPanel createMatrixLine(Sound s) {
         final Sound sound = s;
         JPanel  matrixLine      = new JPanel();
+
+        // Views
+        TemporalView v = new TemporalView(200, 100);
+        s.attachView(v);
+        matrixLine.add(v);
+
+        FFTView fft_v = new FFTView(200, 100);
+        s.attachView(fft_v);
+        matrixLine.add(fft_v);
 
         // Play button
         JButton playButton  = new JButton(new ImageIcon("framework/editors/icons/play.png"));
