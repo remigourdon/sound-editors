@@ -26,6 +26,15 @@ public class BasicEditor extends Editor {
             centralComponent,
             BoxLayout.Y_AXIS));
 
+        // Play all button
+        JButton playAllButton  = new JButton(new ImageIcon("framework/editors/icons/play.png"));
+        playAllButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                player.playAll();
+            }
+        });
+        add(playAllButton);
+
         int i = 0;
         for(Sound s : player.getAllSounds()) {
             final Sound sound = s;
@@ -34,6 +43,14 @@ public class BasicEditor extends Editor {
 
             JLabel label = new JLabel("Sound " + i);
             linePanel.add(label);
+
+            JButton playButton = new JButton(new ImageIcon("framework/editors/icons/play.png"));
+            playButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    player.play(sound);
+                }
+            });
+            linePanel.add(playButton);
 
             TemporalView v = new TemporalView(200, 100);
             s.attachView(v);

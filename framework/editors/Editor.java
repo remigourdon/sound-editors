@@ -38,17 +38,6 @@ public abstract class Editor extends JFrame implements Observer {
             this.getContentPane(),
             BoxLayout.Y_AXIS));
 
-        // Top panel
-        JPanel topPanel     = new JPanel();
-        JButton playAllButton  = new JButton(new ImageIcon("framework/editors/icons/play.png"));
-        playAllButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                player.playAll();
-            }
-        });
-        topPanel.add(playAllButton);
-
-        add(topPanel);
         add(createCentralComponent());
 
         pack();

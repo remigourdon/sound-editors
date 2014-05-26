@@ -1,5 +1,7 @@
 package framework.modifiers;
 
+import java.util.Arrays;
+
 import framework.modifiers.Modifier;
 import framework.parameters.Parameter;
 import framework.parameters.DoubleParameter;
@@ -14,11 +16,12 @@ public class Delay extends Modifier {
      */
     public Delay() {
         delay = new DoubleParameter(this, "Delay", 0., 0., 60.);
-        decay = new DoubleParameter(this, "Decay", 0., 0., 1.);
+        decay = new DoubleParameter(this, "Decay", 1., 0., 1.);
     }
 
     public Double[] apply(Double[] data, Double f, Double d) {
         Double[] result     = new Double[data.length];
+        Arrays.fill(result, 0.);
         int delaySamples    = (int) (delay.getValue() * Generator.SAMPLE_RATE);
 
         for(int i = 0; i < data.length - delaySamples; i++) {
