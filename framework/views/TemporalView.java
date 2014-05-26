@@ -46,7 +46,7 @@ public class TemporalView extends JPanel implements View {
 	// creates the "pen" to draw on bufferedimages
     	g2 = bufferedImage.createGraphics();
 	// set the line's width : 100
-    	g2.setStroke(new BasicStroke(2));
+    	g2.setStroke(new BasicStroke(1));
 	// set background color : black
 	g2.setBackground(Color.black);
 	// set the pen's color : white

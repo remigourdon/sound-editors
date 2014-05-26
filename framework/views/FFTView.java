@@ -122,13 +122,12 @@ public class FFTView extends JPanel implements View {
 	    output[i] *= height * 10 ;
 	}
 	
-	// doesn't do its job !
+	// doesn't do its job !!
 	g2.clearRect( 0, 0, width, height);
 
 
     	g2.setColor(Color.RED);
 	
-	System.out.println("Plotting fft");
     	// plot the whole buffer
     	for(int i = 0 ; i < output.length ; i++) {
     		double currentPoint = (double) output[i];
@@ -145,16 +144,7 @@ public class FFTView extends JPanel implements View {
     		prevPoint = currentPoint;
     	};
 	
-	g2.setColor(Color.WHITE);
-
-    	// adding the x axis
-    	g2.draw( new Line2D.Double(
-				   0 ,
-				   height -1,
-				   width,
-				   height -1
-				   ));
-
+       
 	repaint();// calls paintComponent()
 	// creates the new label corresponding to the last bufferImage
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
@@ -165,15 +155,15 @@ public class FFTView extends JPanel implements View {
     protected void paintComponent(Graphics g) {
     	// calling mother's method
    	super.paintComponent(g);
-	System.out.println("paintComponent");
 	Graphics2D gBack = (Graphics2D) g;
 	
 	// background refresh
-	gBack = (Graphics2D) g;
-	gBack.setBackground(Color.BLACK);
-	gBack.clearRect(0, 0, width, height);
+	//gBack = (Graphics2D) g;
+	//gBack.setBackground(Color.BLACK);
+	//gBack.clearRect(0, 0, width, height);
 
        	// draw on the bufferedImage
+	g2.setBackground(Color.BLACK);
 	g2.drawImage(bufferedImage, 0, 0, this); 
     }
 
