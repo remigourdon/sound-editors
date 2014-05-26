@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import framework.editors.Editor;
 import framework.Sound;
 import framework.Player;
-
 import framework.views.TemporalView;
 import framework.views.FFTView;
 
@@ -54,14 +53,15 @@ public class BasicEditor extends Editor {
             });
             linePanel.add(playButton);
 
+            // Views
             TemporalView v = new TemporalView(200, 100);
             s.attachView(v);
             linePanel.add(v);
-	    
+
             FFTView fft_v = new FFTView(200, 100);
             s.attachView(fft_v);
             linePanel.add(fft_v);
-	    
+
             JButton paramButton = new JButton(new ImageIcon("framework/editors/icons/settings.png"));
             paramButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
