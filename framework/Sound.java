@@ -102,7 +102,7 @@ public class Sound extends Observable implements Observer {
     public void applyModifiers(ArrayList<Modifier> ms) {
         Double[] newData = data.clone();
         for(Modifier m : ms) {
-            newData = m.apply(newData, frequency.getValue(), duration.getValue());
+            newData = m.apply(newData);
         }
         data = newData;
     }
