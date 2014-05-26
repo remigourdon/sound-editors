@@ -3,4 +3,5 @@ framework.editors
 framework.generators
 framework.modifiers
 framework.parameters
+framework.util
 framework.views
