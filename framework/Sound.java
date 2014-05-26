@@ -66,7 +66,11 @@ public class Sound extends Observable implements Observer {
      * @return the SoundEditor newly attached
      */
     public SoundEditor attachEditor() {
-        return new SoundEditor(this);
+        if(editor == null)
+            editor = new SoundEditor(this);
+        else
+            editor.setVisible(true);
+        return editor;
     }
 
     /**
@@ -146,4 +150,5 @@ public class Sound extends Observable implements Observer {
     private DoubleParameter     amplitude;
     private Double[]            data;
     private ArrayList<Modifier> modifiers;
+    private SoundEditor         editor;
 }
