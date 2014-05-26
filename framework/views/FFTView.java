@@ -28,14 +28,37 @@ public class FFTView extends JPanel implements View {
      * @param int h	Height of the panel.
      * @param int w Width of the panel.
      */
-     public FFTView(int h, int w){
-    	height = h;
+     public FFTView(int w, int h){
+	 // panel size settings
     	width = w;
+    	height = h;
+
+	// build the bufferImage
+	bufferedImage = new BufferedImage( 
+					  width,
+					  height,
+					  BufferedImage.TYPE_INT_ARGB
+					   );
+
+	// creates the "pen" to draw on bufferedimages
+    	g2 = bufferedImage.createGraphics();
+	// set the line's width : 100
+    	g2.setStroke(new BasicStroke(1));
+	// set background color : black
+	g2.setBackground(Color.black);
+	// set the pen's color : white
+    	g2.setColor(Color.WHITE);
+
+
+	// convert the new bufferedImage to be able to add it
+	imgLabel = new JLabel(new ImageIcon(bufferedImage));
+	// display the whole canvas with the last strokes
+	repaint();
 
     }
 
 
-	/**
+    /**
      * Implementation of view's method.
      *
      * The update method is called when a change occurs in the model (Sound).
@@ -85,21 +108,12 @@ public class FFTView extends JPanel implements View {
             	output[i] = 0;
         }
 
+	g2.clearRect( 0, 0, width, height);
 
-
-    	// -- Data display settings --
-
-    	g2.setColor(Color.WHITE);
-    	g2.clearRect( 0, 0, width, height);
-    	g.setColor(Color.RED);
-    	g.clearRect( 0, 0, width, height);
-
-
+    	g2.setColor(Color.WHITE);    	
+    	
     	// set the origin on the down-left corner
     	g2.translate(0, height - 1);
-
-    	// set the line's width
-    	g2.setStroke(new BasicStroke(80));
 
     	// Pick the scale in function of the size of the panel
     	if(height <= 200 && width <= 400){
@@ -128,9 +142,11 @@ public class FFTView extends JPanel implements View {
     				));
     		prevPoint = currentPoint;
     	};
+	
+	g2.setColor(Color.RED);
 
     	// drawing the y axis
-    	g.draw( new Line2D.Double(
+    	g2.draw( new Line2D.Double(
     			0 ,
 				0,
 				0,
@@ -138,12 +154,17 @@ public class FFTView extends JPanel implements View {
 				));
 
     	// adding the x axis
-    	g.draw( new Line2D.Double(
+    	g2.draw( new Line2D.Double(
     			0 ,
 				height -1,
 				width,
 				height -1
 				));
+
+	// creates the new label corresponding to the last bufferImage
+	imgLabel = new JLabel(new ImageIcon(bufferedImage));
+	// add the label to this panel
+	add(imgLabel);
 
     	repaint();// calls paintComponent()
 
@@ -154,50 +175,11 @@ public class FFTView extends JPanel implements View {
     	// calling mother's method
     	super.paintComponent(graph);
 
-    	if(bufferedImage == null){
-    		init();
-    	}
-	// ( Image, x, y, theOberserver )
-    	g.drawImage(bufferedImage, 0, 0, this);
+       	// ( Image, x, y, theOberserver )
+    	g2.drawImage(bufferedImage, 0, 0, this);
 	
-	// added, see TemporalView.java (not working)
-	JLabel ImgLabel = new JLabel(new ImageIcon(bufferedImage));
-    	add(ImgLabel);
-    	
-
-
     }
 
-
-    /**
-     * Defines the fundamentals aspects settings
-     * Helper method
-     *
-     *
-     */
-    private void init(){
-    	// size settings
-    	width = getWidth();
-    	height = getHeight();
-
-    	// image settings :
-    	// 8 bit
-    	// Alpha Red Green Blue
-    	bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB);
-
-    	// draw on the BufferedImage
-    	g2 = bufferedImage.createGraphics();
-    	g = bufferedImage.createGraphics();
-    	// now we can draw using g2 and g and the method draw()
-
-    	g2.setBackground(Color.black);
-
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-    }
-
-    // the waveform display
-    //private SignalPanel signalPanel;
 
     // Panel visual settings
     private int height;
@@ -209,10 +191,10 @@ public class FFTView extends JPanel implements View {
     // Used to draw the sound
     private Graphics2D g2;
 
-    // Used to draw the x and y axis
-    private Graphics2D g;
-
     // Memorizing the y1 point (c.f drawData() )
     private double prevPoint;
+
+    // The bufferedimage is stored here before adding it to the JPanel
+    private JLabel imgLabel;
 
 }

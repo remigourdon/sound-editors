@@ -46,12 +46,11 @@ public class TemporalView extends JPanel implements View {
 	// creates the "pen" to draw on bufferedimages
     	g2 = bufferedImage.createGraphics();
 	// set the line's width : 100
-    	g2.setStroke(new BasicStroke(1));
+    	g2.setStroke(new BasicStroke(2));
 	// set background color : black
 	g2.setBackground(Color.black);
 	// set the pen's color : white
     	g2.setColor(Color.WHITE);
-
 
 	// convert the new bufferedImage to be able to add it
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
@@ -60,8 +59,7 @@ public class TemporalView extends JPanel implements View {
 	System.out.println("Constructor");
     }
 
-     /**
- 
+     /** 
      * 
      * The update method is called when a change occurs in the model (theSound).
      * @param Observable o   		The sound model.
@@ -88,51 +86,64 @@ public class TemporalView extends JPanel implements View {
      * @param	Double	buffer	the data array to be plotted
      */
     public void drawData(Double[] buffer) {
-	
-    	// convert Double[] to double[]
+
+	double maxVal = -101;
     	double[] output = new double[buffer.length];
     	for(int i = 0; i < buffer.length ; i++) {
-    		output[i]=buffer[i].doubleValue();
+	    // convert to double[]
+	    output[i]=buffer[i].doubleValue();
+	    // finds the highest value
+	    if(output[i] > maxVal) {
+		maxVal = output[i];
+	    }
     	}
+	System.out.println("Maximum value: "+maxVal);
+
 	
+	// scaling
+	for(int i = 0 ; i < output.length ; i++) {
+	    output[i] = output[i] / ((height/100) * 2);
+	}
+	
+
 	// erase previous strokes
 	g2.clearRect( 0, 0, width, height);
 
-	g2.setColor(Color.WHITE);
-	//g2.scale(width,height);
+	g2.setColor(Color.RED);
+
     	// Go through the whole data and connects the dots
     	for(int i = 0 ; i < buffer.length ; i++) {
-    		double prevPoint = (double) buffer[i];
+    		double prevPoint = (double) output[i];
     		// MEMENTO : Line2D.Double( x1, y1, x2, y2)
     		// Previous point = (x1,y1) & Current point = (x2,y2)
     		g2.draw( new Line2D.Double(
-    				buffer.length - i ,
-    				currentPoint + height/2 ,
-    				buffer.length - (i+1),
-    				prevPoint + height/2
-    				));
+					   buffer.length - i ,
+					   currentPoint + height/2 ,
+					   buffer.length - (i+1),
+					   prevPoint + height/2
+					   ));
     		currentPoint = prevPoint;
     	}
 
-	g2.setColor(Color.RED);
+	g2.setColor(Color.WHITE);
 
     	// adding the x axis
     	g2.draw( new Line2D.Double(
-    			0 ,
-			height/2,
-			width,
-			height/2
+				   0 ,
+				   height/2,
+				   width,
+				   height/2
 				  ));
-
+	
 	//take out the old one from this panel
-	remove(imgLabel);
+	//remove(imgLabel);
 	// creates the new label corresponding to the last bufferImage
 	imgLabel = new JLabel(new ImageIcon(bufferedImage));
 	// add the label to this panel
 	add(imgLabel);
-
 	// calls paintComponent()
     	repaint();
+
 	System.out.println("DrawData");
     }
 
@@ -140,9 +151,7 @@ public class TemporalView extends JPanel implements View {
     protected void paintComponent(Graphics g) {
     	// calling mother's method
     	super.paintComponent(g);
-	//Graphics2D g2 = (Graphics2D)g;
 
-	
 	// draws on the bufferedImage
 	g2.drawImage(bufferedImage, 0, 0, this);
 
