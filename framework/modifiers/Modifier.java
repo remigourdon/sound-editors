@@ -59,6 +59,7 @@ public abstract class Modifier extends Observable implements Observer, Cloneable
      * Apply the transformations to the array and return the new data.
      * @param  data the current data
      * @return      the new data
+     * @postcondition returnArray.length == data.length
      */
     public abstract Double[] apply(Double[] data);
 

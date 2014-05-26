@@ -28,6 +28,7 @@ public class Delay extends Modifier {
             result[i + delaySamples] = data[i] * decay.getValue();
         }
 
+        assert result.length == data.length: "violated postcondition: result.length == data.length";
         return result;
     }
 
