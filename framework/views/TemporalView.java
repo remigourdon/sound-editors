@@ -99,10 +99,16 @@ public class TemporalView extends JPanel implements View {
     	}
 	System.out.println("Maximum value: "+maxVal);
 	
-	
-	// scaling
-	for(int i = 0 ; i < output.length ; i++) {
-	    output[i] = output[i] * (height/2);
+	if(maxVal <= 1) {
+	    for(int i = 0 ; i < output.length ; i++) {
+		output[i] = output[i] * 100 * (height/2);
+	    }
+
+	}
+	else{
+	    for(int i = 0 ; i < output.length ; i++) {
+		output[i] = output[i] * (height/2);
+	    }
 	}
 	
 
